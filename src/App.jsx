@@ -85,7 +85,6 @@ export default function App() {
             {currentPage === "Services" && <Services showNotes={showNotes} />}
             {currentPage === "About" && <About showNotes={showNotes} />}
             {currentPage === "Contact" && <Contact showNotes={showNotes} />}
-
             <div className="h-[1px] bg-neutral-200 mt-6" />
             <Footer />
           </div>
