@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Make type & spacing fluid across the app by scaling the root font-size. 
+   All Tailwind rem-based utilities (text-*, p-*, m-*, gap-*, rounded-*) will scale. */
+html {
+  font-size: clamp(15px, 14px + 0.5vw, 18px);
+}
+
+/* Fluid placeholder heights for blocks used in wireframes */
+.ph-xs { min-height: clamp(0.75rem, 0.6rem + 0.4vw, 1rem); }
+.ph-sm { min-height: clamp(1.25rem, 1rem + 0.6vw, 1.75rem); }
+.ph-md { min-height: clamp(2.5rem, 2rem + 1vw, 3.5rem); }
+.ph-lg { min-height: clamp(4rem, 3rem + 2vw, 6rem); }
+.ph-xl { min-height: clamp(8rem, 6rem + 4vw, 12rem); }
+
+/* Optional: container with fluid side padding */
+.container-fluid {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 0.5rem + 2vw, 2rem);
+  max-width: min(100%, 1400px);
+}
