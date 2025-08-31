@@ -8,7 +8,7 @@ export default function Home({ showNotes }) {
   return (
     <div className="space-y-6">
       {/* A. Hero / Intro Section */}
-      <Box title="A. Hero / Intro">
+      <Box title="A. Hero Test / Intro">
         <div className="grid md:grid-cols-[2fr,1fr] gap-4 items-stretch">
           <div className="ph-xl border border-dashed border-neutral-300 rounded-2xl flex items-center justify-center text-xs text-neutral-500">
             Hi-res image / short looping video (mobile/desktop optimized)
