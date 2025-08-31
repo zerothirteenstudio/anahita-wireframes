@@ -1,14 +1,19 @@
-# Natascha — Wireframes (Vite + React + Tailwind)
+# Anahita Wireframes (Preview)
 
-## Run locally
+This repository contains the interactive wireframes for **[Client / Project Name]**.  
+Built with React, Vite, and Tailwind. Deployed automatically to GitHub Pages.
+
+👉 **Live Preview:** [https://zerothirteenstudio.github.io/anahita-wireframes](https://zerothirteenstudio.github.io/anahita-wireframes)
+
+---
+
+## 🔄 How Updates Work
+- All changes pushed to the **main** branch are automatically built and deployed by GitHub Actions.  
+- The site updates within 1–2 minutes.  
+- No need to run manual deploys.
+
+**Workflow:**
 ```bash
-npm install
-npm run dev
-```
-Then open the local URL Vite prints (usually `http://localhost:5173`).
-
-## Where things live
-- `src/App.jsx` — the interactive wireframes
-- `src/main.jsx` — app bootstrap
-- `index.html` — root HTML
-- `tailwind.config.js`, `postcss.config.js`, `src/index.css` — Tailwind setup
+git add .
+git commit -m "Describe change"
+git push
