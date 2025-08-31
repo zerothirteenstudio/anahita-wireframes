@@ -7,7 +7,6 @@ import ProjectDetail from "./pages/ProjectDetail.jsx";
 import Services from "./pages/Services.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
-
 const pages = ["Home", "Portfolio", "Project Detail", "Services", "About", "Contact"];
 
 const bpOptions = [
@@ -81,7 +80,7 @@ export default function App() {
 
             {currentPage === "Home" && <Home showNotes={showNotes} />}
             {currentPage === "Portfolio" && (  <Portfolio showNotes={showNotes} goTo={(p) => setCurrentPage(p)} />)}
-            {currentPage === "Project Detail" && <ProjectDetail showNotes={showNotes} />}
+            {currentPage === "Project Detail" && ( <ProjectDetail showNotes={showNotes} goTo={setCurrentPage} /> )}
             {currentPage === "Services" && <Services showNotes={showNotes} />}
             {currentPage === "About" && <About showNotes={showNotes} />}
             {currentPage === "Contact" && <Contact showNotes={showNotes} />}

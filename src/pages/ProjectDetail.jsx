@@ -14,20 +14,20 @@ export default function ProjectDetail({ showNotes, goTo }) {
   return (
     <div className="space-y-6">
       {/* Back / Lang */}
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-neutral-500">EN | DE</div>
-        {typeof goTo === "function" && (
-          <button
-            onClick={() => goTo("Portfolio")}
-            className="border border-neutral-300 rounded-2xl px-2 py-1 text-xs hover:bg-neutral-50"
-          >
-            ← Back to Portfolio
-          </button>
+      <div className="flex items-center justify-start">
+      {typeof goTo === "function" && (
+        <button
+          type="button"
+          onClick={() => goTo("Portfolio")}
+          className="border border-neutral-300 rounded-2xl px-2 py-1 text-xs hover:bg-neutral-50"
+        >
+          ← Back to Portfolio
+        </button>
         )}
       </div>
 
       {/* =========================
-          Project Hero (now includes Quick Facts + Project Summary)
+          Project Hero 
          ========================= */}
       <Box title="Project Hero">
         <div className="grid lg:grid-cols-[2fr,1.2fr] gap-4 items-start">
@@ -66,7 +66,7 @@ export default function ProjectDetail({ showNotes, goTo }) {
                 <div className="ph-sm bg-neutral-100 rounded-2xl" />
               </div>
               <div className="space-y-1">
-                <div className="text-[11px] uppercase tracking-wide text-neutral-500">Tags / Categories (EN/DE)</div>
+                <div className="text-[11px] uppercase tracking-wide text-neutral-500">Tags / Categories </div>
                 <div className="ph-sm bg-neutral-100 rounded-2xl" />
               </div>
             </div>

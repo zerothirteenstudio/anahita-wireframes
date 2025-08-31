@@ -64,7 +64,7 @@ export default function Portfolio({ showNotes, goTo }) {
           <div className="ph-sm bg-neutral-100 rounded-2xl" />
           <div className="ph-sm bg-neutral-100 rounded-2xl w-2/3" />
           {showNotes && (
-            <Note>1–2 sentence portfolio statement (EN/DE). Keep concise.</Note>
+            <Note>1–2 sentence portfolio statement. Keep concise.</Note>
           )}
         </div>
       </Box>
@@ -164,7 +164,7 @@ export default function Portfolio({ showNotes, goTo }) {
 
           {showNotes && (
             <Note>
-              No search/pagination needed (≤12 projects). Keep filters simple (Type, Year).
+              (optional filtering)Keep filters simple (Type, Year).
             </Note>
           )}
         </div>
@@ -220,7 +220,7 @@ export default function Portfolio({ showNotes, goTo }) {
       <Box title="Work with Natascha">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="space-y-1">
-            <SectionTitle>See something you’d like to explore?</SectionTitle>
+            <SectionTitle>Interested in collaborating?</SectionTitle>
             <Note>Bridge portfolio → services/contact. Friendly, accessible tone.</Note>
           </div>
           <div className="flex gap-2">
