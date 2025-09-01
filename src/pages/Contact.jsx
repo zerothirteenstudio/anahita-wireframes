@@ -1,7 +1,5 @@
 import React from "react";
-import Box from "../components/ui/Box.jsx";
-import Placeholder from "../components/ui/Placeholder.jsx";
-import Note from "../components/ui/Note.jsx";
+import { Button, Box, Tag, SectionTitle, Note, Placeholder } from "../components/ui";
 
 export default function Contact({ showNotes }) {
   return (

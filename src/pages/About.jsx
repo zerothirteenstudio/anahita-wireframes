@@ -1,76 +1,173 @@
 import React from "react";
-import Box from "../components/ui/Box.jsx";
-import Placeholder from "../components/ui/Placeholder.jsx";
-import SectionTitle from "../components/ui/SectionTitle.jsx";
-import Note from "../components/ui/Note.jsx";
+import { Box, Placeholder, SectionTitle, Note, CTAGroup } from "../components/ui";
 
-export default function About({ showNotes }) {
+export default function About({ showNotes, goTo }) {
   return (
     <div className="space-y-6">
-      {/* A. Hero Statement / Opening */}
-      <Box title="A. Hero Statement / Opening">
-        <div className="grid md:grid-cols-[1fr,2fr] gap-4 items-start">
-          <Placeholder label="Professional Headshot (hi-res, warm)" />
+      {/* 1) Opening + At a Glance (merged) */}
+      <Box title="Opening & At a Glance">
+        <div className="grid md:grid-cols-[1.1fr,1.4fr] gap-6 items-start">
+          {/* Left: portrait (tall) */}
           <div className="space-y-3">
-            <div className="ph-sm bg-neutral-100 rounded-2xl" /> {/* 2–3 sentence intro */}
-            <div className="ph-md bg-neutral-100 rounded-2xl" /> {/* Values-forward positioning */}
+            <Placeholder className="ph-2xl" label="Portrait / quiet looping video" />
+          </div>
+
+          {/* Right: opener line + short bio + quick facts in a flowing stack */}
+          <div className="space-y-5">
+            {/* One-sentence opener */}
+            <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
+
+            {/* Short bio (3–4 compact lines) */}
+            <div className="space-y-2">
+              <SectionTitle>Short Bio</SectionTitle>
+              <div className="ph-sm bg-neutral-100 rounded-sm" />
+              <div className="ph-sm bg-neutral-100 rounded-sm" />
+              <div className="ph-sm bg-neutral-100 rounded-sm w-5/6" />
+            </div>
+
+            {/* Quick facts (inline, airy) */}
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Artist</div>
+                <div className="ph-xs bg-neutral-100 rounded-sm w-2/3" />
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Facilitator</div>
+                <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" />
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Consultant</div>
+                <div className="ph-xs bg-neutral-100 rounded-sm w-4/5" />
+              </div>
+            </div>
+
+            {/* Optional: gentle CTAs, aligned to end for consistency */}
+            <div className="flex gap-2 justify-end">
+              <button
+                className="btn-ghost text-sm"
+                onClick={() => goTo && goTo("Portfolio")}
+              >
+                See selected work
+              </button>
+              <button
+                className="btn text-sm"
+                onClick={() => goTo && goTo("Contact")}
+              >
+                Begin a conversation
+              </button>
+            </div>
           </div>
         </div>
-        {showNotes && <Note>Hero combines artistic + facilitation identity with values-forward positioning. Warm, genuine tone.</Note>}
+
+        {showNotes && (
+          <Note>
+            One strong image + a single-line opener. Short bio and three quick facts support fast scanning.
+          </Note>
+        )}
       </Box>
 
-      {/* B. Professional Bio / Story */}
-      <Box title="B. Professional Bio / Story">
+      {/* 2) Main narrative (single column with optional inline image/caption) */}
+      <Box title="Main Narrative">
         <div className="space-y-3">
-          <div className="ph-lg bg-neutral-100 rounded-2xl" /> {/* Origin + ancestry */}
-          <div className="ph-lg bg-neutral-100 rounded-2xl" /> {/* Artistic journey → facilitation */}
-          <div className="ph-lg bg-neutral-100 rounded-2xl" /> {/* Healing + community work */}
-          <div className="ph-lg bg-neutral-100 rounded-2xl" /> {/* Creative practice ↔ social transformation */}
+          <div className="ph-xl bg-neutral-100 rounded-sm" />
+          <div className="ph-lg bg-neutral-100 rounded-sm" />
+          <div className="grid md:grid-cols-[2fr,1fr] gap-4 items-start mt-2">
+            <div className="ph-lg bg-neutral-100 rounded-sm" />
+            <div className="space-y-1">
+              <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" />
+              <div className="ph-xs bg-neutral-100 rounded-sm w-1/2" />
+            </div>
+          </div>
         </div>
-        {showNotes && <Note>Main Bio: 300–500 words EN/DE. Short Bio: 100–150 words. Narrative connects art + facilitation + healing.</Note>}
+        {showNotes && (
+          <Note>
+            300–500 words that tie film, facilitation, and why. Use one inline visual to pace the reading.
+          </Note>
+        )}
       </Box>
 
-      {/* C. Expertise & Methods */}
-      <Box title="C. Expertise & Methods">
-        <div className="grid md:grid-cols-3 gap-4">
+      {/* 3) Methods & Lineages (moved up, scannable) */}
+      <Box title="Methods & Lineages">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            "Facilitation approaches",
-            "Somatic / Embodiment practices",
-            "Integration of arts, activism & healing",
-          ].map((m) => (
-            <div key={m} className="space-y-2">
-              <SectionTitle>{m}</SectionTitle>
-              <div className="ph-md bg-neutral-100 rounded-2xl" />
+            "Process Work (relational transformation)",
+            "Theatre of the Oppressed",
+            "Somatic practice & pacing",
+            "Storytelling & narrative repair",
+            "Political theory & philosophy",
+            "Dream work / psychological inquiry",
+          ].map((label) => (
+            <div key={label} className="space-y-2">
+              <SectionTitle>{label}</SectionTitle>
+              <div className="ph-sm bg-neutral-100 rounded-sm" />
             </div>
           ))}
         </div>
-        {showNotes && <Note>Optional: use slider or visual component for methods. Clear, simple descriptions.</Note>}
+        {showNotes && (
+          <Note>
+            Six short statements; one sentence each. Name the lineage and your angle.
+          </Note>
+        )}
       </Box>
 
-      {/* D. Background & Credentials */}
-      <Box title="D. Background & Credentials">
+      {/* 4) Pull-quote (moved down for resonance after methods) */}
+      <Box title="Pull-quote">
+        <figure className="border border-brand-border rounded-sm p-4 bg-white">
+          <blockquote className="text-base leading-relaxed">
+            <div className="ph-sm bg-neutral-100 rounded-sm w-11/12" />
+            <div className="ph-sm bg-neutral-100 rounded-sm w-4/5 mt-2" />
+          </blockquote>
+          <figcaption className="text-[11px] text-neutral-500 mt-2">
+            <div className="ph-xs bg-neutral-100 rounded-sm w-1/3" />
+          </figcaption>
+        </figure>
+        {showNotes && (
+          <Note>
+            One sentence from a collaborator, participant, or press to anchor trust.
+          </Note>
+        )}
+      </Box>
+
+      {/* 5) Selected recognition (tight micro-lists) */}
+      <Box title="Selected Recognition">
         <div className="grid md:grid-cols-3 gap-4">
-          <Placeholder label="Education / Training" />
-          <Placeholder label="Certifications / Specialized Training" />
-          <Placeholder label="Languages / Experience Timeline" />
+          {["Awards / Exhibitions", "Institutional Collaborations", "Press / Outcomes"].map((heading) => (
+            <div key={heading} className="space-y-2">
+              <SectionTitle>{heading}</SectionTitle>
+              <div className="ph-sm bg-neutral-100 rounded-sm" />
+              <div className="ph-sm bg-neutral-100 rounded-sm" />
+              <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
+            </div>
+          ))}
         </div>
-        {showNotes && <Note>Include credentials, certifications, training, languages. Years active (since 15). press kit.</Note>}
+        {showNotes && (
+          <Note>
+            3–5 items per column. Add links/dates when available; keep the list spare.
+          </Note>
+        )}
       </Box>
 
-      {/* E. Recognition & Impact */}
-      <Box title="E. Recognition & Impact">
-        <div className="grid md:grid-cols-3 gap-4">
-          <Placeholder label="Awards / Exhibitions" />
-          <Placeholder label="Institutional Collaborations / Partnerships" />
-          <Placeholder label="Outcomes / Impact / Press Mentions" />
+      {/* 6) Invitation */}
+      <Box title="Invitation">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="space-y-1">
+            <SectionTitle>Begin a conversation</SectionTitle>
+            <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" />
+          </div>
+          <CTAGroup
+            layout="row"
+            align="end"
+            secondary="See Portfolio"
+            primary="Contact"
+            onSecondary={() => goTo && goTo("Portfolio")}
+            onPrimary={() => goTo && goTo("Contact")}
+          />
         </div>
-        {showNotes && <Note>List awards, exhibitions, institutions, outcomes. Press mentions with dates/links. Supports credibility for funders & institutions.</Note>}
-      </Box>
-
-      {/* Bridge to Contact/Services */}
-      <Box title="Contact Bridge">
-        <div className="ph-sm bg-neutral-100 rounded-2xl" />
-        {showNotes && <Note>Friendly transitional text bridging About → Services/Contact. Clear CTA.</Note>}
+        {showNotes && (
+          <Note>
+            Two consistent CTAs. Keep language invitational, not sales-driven.
+          </Note>
+        )}
       </Box>
     </div>
   );

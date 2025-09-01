@@ -1,27 +1,52 @@
 /** @type {import('tailwindcss').Config} */
+import containerQueries from "@tailwindcss/container-queries";
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      fontSize: {
-        // fluid type examples
-        xs: "clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem)", // 12–14px
-        sm: "clamp(0.875rem, 0.8rem + 0.3vw, 1rem)",   // 14–16px
-        base: "clamp(1rem, 0.9rem + 0.4vw, 1.125rem)", // 16–18px
-        lg: "clamp(1.125rem, 1rem + 0.5vw, 1.25rem)",  // 18–20px
-        xl: "clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem)",  // 20–24px
-        "2xl": "clamp(1.5rem, 1.3rem + 0.8vw, 2rem)",  // 24–32px
-        "3xl": "clamp(1.875rem, 1.5rem + 1vw, 2.25rem)", // etc.
+      colors: {
+        brand: {
+          DEFAULT: "#111827",       // main text
+          muted: "#6B7280",         // secondary text
+          surface: "#FFFFFF",
+          border: "#D1D5DB",        // neutral border
+          accent: "#7353BA",
+          accentII: "#2F195F", // orange
+          accentFg: "#FFFFFF",      // accent text
+        },
       },
+      borderRadius: {
+      xs: "var(--radius-xs)",
+      sm: "var(--radius-sm)",
+      DEFAULT: "var(--radius-md)",
+      lg: "var(--radius-lg)",
+      xl: "var(--radius-xl)",
+  },
       spacing: {
-        // fluid spacing examples
-        1: "clamp(0.25rem, 0.2rem + 0.2vw, 0.5rem)",
-        2: "clamp(0.5rem, 0.4rem + 0.3vw, 0.75rem)",
-        4: "clamp(1rem, 0.9rem + 0.5vw, 1.25rem)",
-        6: "clamp(1.5rem, 1.2rem + 0.6vw, 2rem)",
-        8: "clamp(2rem, 1.6rem + 1vw, 3rem)",
+        xs: "var(--gap-xs)",
+        sm: "var(--gap-sm)",
+        md: "var(--gap-md)",
+        lg: "var(--gap-lg)",
+        xl: "var(--gap-xl)",
+      "2xl": "var(--gap-2xl)",
+},
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Georgia", "serif"],
+      },
+      fontSize: {
+        xs: ["clamp(12px, 0.75vw, 13px)", "1.5"],
+        sm: ["clamp(14px, 1.1vw, 15px)", "1.6"],
+        base: ["clamp(16px, 1.3vw, 18px)", "1.7"],
+        lg: ["clamp(18px, 1.6vw, 20px)", "1.6"],
+        xl: ["clamp(20px, 2vw, 24px)", "1.35"],
+        "2xl": ["clamp(24px, 2.6vw, 30px)", "1.25"],
+        "3xl": ["clamp(28px, 3.2vw, 36px)", "1.2"],
+      },
+      boxShadow: {
+        card: "0 1px 2px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.06)",
       },
     },
   },
   plugins: [],
-}
+};

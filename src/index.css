@@ -2,23 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Make type & spacing fluid across the app by scaling the root font-size. 
-   All Tailwind rem-based utilities (text-*, p-*, m-*, gap-*, rounded-*) will scale. */
+/* ---------- Fluid root type ---------- */
 html {
+  /* scales all rem-based Tailwind utilities app-wide */
   font-size: clamp(15px, 14px + 0.5vw, 18px);
 }
 
-/* Fluid placeholder heights for blocks used in wireframes */
-.ph-xs { min-height: clamp(0.75rem, 0.6rem + 0.4vw, 1rem); }
-.ph-sm { min-height: clamp(1.25rem, 1rem + 0.6vw, 1.75rem); }
-.ph-md { min-height: clamp(2.5rem, 2rem + 1vw, 3.5rem); }
-.ph-lg { min-height: clamp(4rem, 3rem + 2vw, 6rem); }
-.ph-xl { min-height: clamp(8rem, 6rem + 4vw, 12rem); }
+/* ---------- Placeholder sizing (larger scale for cards/media) ---------- */
+.ph-xs { min-height: clamp(1rem, 0.75rem + 0.4vw, 1.5rem); }   /* chips / tiny labels */
+.ph-sm { min-height: clamp(2rem, 1.5rem + 0.8vw, 3rem); }      /* short text rows */
+.ph-md { min-height: clamp(4rem, 3rem + 1.5vw, 6rem); }        /* small cards / list thumbs */
+.ph-lg { min-height: clamp(8rem, 6rem + 3vw, 12rem); }         /* grid thumbnails */
+.ph-xl { min-height: clamp(12rem, 8rem + 5vw, 18rem); }        /* featured media */
+.ph-2xl { min-height: clamp(16rem, 12rem + 6vw, 24rem); }      /* hero / banners */
 
-/* Optional: container with fluid side padding */
+/* ---------- Fluid container helper ---------- */
 .container-fluid {
   width: 100%;
   margin-inline: auto;
   padding-inline: clamp(1rem, 0.5rem + 2vw, 2rem);
   max-width: min(100%, 1400px);
+}
+
+/* ---------- Base (tokens + base styles) ---------- */
+@layer base {
+  :root {
+    /* Corner radius tokens (use these across components) */
+    --radius-xs: 0.25rem;  /* 4px  – chips */
+    --radius-sm: 0.5rem;   /* 8px  – buttons */
+    --radius-md: 0.75rem;  /* 12px – cards/default */
+    --radius-lg: 1rem;     /* 16px – bigger sections */
+    --radius-xl: 1.5rem;   /* 24px – hero/banners */
+
+    /* Spacing tokens (optional helpers) */
+      --gap-xs: 0.5rem;
+      --gap-sm: 0.75rem;
+      --gap-md: 1rem;
+      --gap-lg: 1.5rem;
+      --gap-xl: 2rem;
+      --gap-2xl: 3rem;
+
+    /* Focus ring (accent) */
+    --ring: 0 0 0 3px rgba(249, 115, 22, .25); /* brand-accent @ 25% */
+  }
+
+  html, body {
+    @apply bg-neutral-50 text-brand;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ---------- Components (global classes) ---------- */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition;
+    @apply border border-brand-border;
+    border-radius: var(--radius-sm);
+  }
+  .btn:hover { @apply bg-neutral-50; }
+  .btn:focus-visible { box-shadow: var(--ring); outline: none; }
+
+  .btn-primary {
+    @apply bg-brand-accent text-brand-accentFg border-transparent;
+  }
+  .btn-primary:hover { @apply bg-brand-accentII; }
+
+  .btn-ghost {
+    @apply border-transparent hover:bg-neutral-100;
+  }
+
+  /* Cards / Boxes */
+  .card {
+    @apply border-2 border-dashed bg-white p-4 shadow-card;
+    @apply border-brand-border;
+    border-radius: var(--radius-md);
+  }
+
+  /* Tags / Chips */
+  .chip {
+    @apply inline-flex items-center px-2 py-0.5 text-[11px] text-brand-muted;
+    @apply border border-brand-border;
+    border-radius: var(--radius-xs);
+  }
+
+
+  /* Section titles & notes */
+  .section-title { @apply text-sm font-medium text-neutral-800 mb-2; }
+  .note { @apply text-[11px] leading-snug text-neutral-500; }
+}
+
+/* ---------- Utilities (tiny helpers) ---------- */
+@layer utilities {
+  /* Fluid vertical stack spacing */
+  .stack { display: flex; flex-direction: column; gap: clamp(0.75rem, 2vw, 1.5rem); }
+
+  /* Fluid padding for sections/cards */
+  .pad { padding: clamp(0.75rem, 2vw, 1.5rem); }
 }

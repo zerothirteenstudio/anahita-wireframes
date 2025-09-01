@@ -1,57 +1,141 @@
-import React, { useMemo, useState } from "react";
-import Box from "../components/ui/Box.jsx";
-import SectionTitle from "../components/ui/SectionTitle.jsx";
-import Tag from "../components/ui/Tag.jsx";
-import Note from "../components/ui/Note.jsx";
+import React, { useMemo, useState, useRef } from "react";
+import {
+  Box,
+  Tag,
+  SectionTitle,
+  Note,
+  Placeholder,
+  CTAGroup,
+} from "../components/ui";
 
-/**
- * Props:
- *  - showNotes (boolean)
- *  - goTo?: (pageName: string) => void   // optional nav helper passed from App
- */
-const TYPES = ["All", "Film", "Visual Art", "Performance", "Workshops"];
-const YEARS = ["All", "2025", "2024", "2023", "2022", "≤2021"];
+/* ---------------------------------------------
+   Featured card — widescreen (16:9), near full width
+   - One big card per snap, slight peek of next
+---------------------------------------------- */
+function FeaturedCard({ item, onOpen }) {
+  return (
+    <article
+      className="
+        snap-start shrink-0
+        w-[92%] sm:w-[90%] md:w-[88%] lg:w-[82%] xl:w-[76%]
+        mr-4 cursor-pointer
+      "
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen?.(item)}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(item)}
+      aria-label={`Open ${item.title}`}
+    >
+      <div className="rounded-md border border-brand-border bg-white shadow-card overflow-hidden">
+        {/* Media area: true 16:9 */}
+        <div className="relative w-full aspect-[16/9]">
+          <div className="absolute inset-0 p-3">
+            <Placeholder className="w-full h-full rounded-sm" label="Featured video / image" />
+          </div>
+        </div>
 
+        {/* Meta / CMS-like fields */}
+        <div className="px-4 pb-4 pt-3 space-y-2">
+          <div className="ph-xs bg-neutral-100 rounded-sm w-2/3" /> {/* title */}
+          <div className="flex items-center gap-2 text-[10px] text-neutral-600">
+            <Tag>{item.year}</Tag>
+            <Tag>{item.type}</Tag>
+          </div>
+          <div className="ph-sm bg-neutral-100 rounded-sm w-10/12" /> {/* short impact line */}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ---------------------------------------------
+   Editorial list with hover preview hook
+---------------------------------------------- */
+function ProjectList({ items, onOpen, onHover }) {
+  return (
+    <ul className="divide-y divide-brand-border">
+      {items.map((it) => (
+        <li key={it.id} className="py-3">
+          <button
+            className="w-full text-left group grid grid-cols-[1fr,auto] gap-3 items-center"
+            onClick={() => onOpen?.(it)}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(it)}
+            onMouseEnter={() => onHover?.(it)}
+            onMouseLeave={() => onHover?.(null)}
+            onFocus={() => onHover?.(it)}
+            onBlur={() => onHover?.(null)}
+            aria-label={`Open ${it.title}`}
+          >
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 text-[10px] text-neutral-600 mb-1">
+                <Tag>{it.type}</Tag>
+                <Tag>{it.year}</Tag>
+              </div>
+              <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" /> {/* title line */}
+            </div>
+            <span className="text-[11px] text-neutral-400 group-hover:text-neutral-700">
+              View →
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ---------------------------------------------
+   In-section preview (stays inside the Box)
+---------------------------------------------- */
+function InContainerPreview({ item }) {
+  if (!item) return null;
+  return (
+    <div
+      className="
+        hidden md:block absolute right-2 top-8
+        w-[320px] lg:w-[380px] xl:w-[420px]
+        rounded-md border border-brand-border bg-white shadow-card
+        pointer-events-none
+      "
+      aria-hidden="true"
+    >
+      <div className="p-3">
+        <div className="text-[10px] text-neutral-500 mb-2">{item.title}</div>
+        <div className="rounded-md border border-brand-border overflow-hidden">
+          {/* 16:9 here too for consistency */}
+          <div className="relative w-full aspect-[16/9]">
+            <div className="absolute inset-0">
+              <Placeholder className="w-full h-full" label="Preview" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------
+   Page
+---------------------------------------------- */
 export default function Portfolio({ showNotes, goTo }) {
-  const [activeType, setActiveType] = useState("All");
-  const [activeYear, setActiveYear] = useState("All");
-  const [view, setView] = useState("grid"); // "grid" | "list"
-  const [sort, setSort] = useState("newest");
+  const [hovered, setHovered] = useState(null);
+  const stripRef = useRef(null);
 
-  // --- demo data (max 12)
+  // Demo data
   const items = useMemo(
     () =>
       Array.from({ length: 12 }).map((_, i) => ({
         id: i + 1,
         title: `Project ${i + 1}`,
-        type: TYPES[((i % (TYPES.length - 1)) + 1)], // cycle types (skip "All")
-        year: (2025 - (i % 5)).toString(),           // 2025..2021
-        featured: i < 2,                              // first two featured
+        type: ["Film", "Visual Art", "Performance", "Workshops"][i % 4],
+        year: (2025 - (i % 5)).toString(),
+        featured: i < 3, // three featured
       })),
     []
   );
 
-  // --- filtering
-  const filtered = items.filter((it) => {
-    const byType = activeType === "All" || it.type === activeType;
-    const byYear =
-      activeYear === "All" ||
-      (activeYear === "≤2021"
-        ? parseInt(it.year, 10) <= 2021
-        : it.year === activeYear);
-    return byType && byYear;
-  });
+  const featured = items.filter((i) => i.featured);
+  const rest = items.filter((i) => !i.featured);
 
-  // --- sorting
-  const sorted = useMemo(() => {
-    const s = [...filtered];
-    if (sort === "newest") s.sort((a, b) => parseInt(b.year, 10) - parseInt(a.year, 10));
-    else if (sort === "oldest") s.sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
-    else s.sort((a, b) => a.title.localeCompare(b.title)); // A–Z
-    return s;
-  }, [filtered, sort]);
-
-  // nav helper
   const openDetail = () => {
     if (typeof goTo === "function") goTo("Project Detail");
   };
@@ -61,184 +145,70 @@ export default function Portfolio({ showNotes, goTo }) {
       {/* Intro */}
       <Box title="Intro">
         <div className="space-y-2">
-          <div className="ph-sm bg-neutral-100 rounded-2xl" />
-          <div className="ph-sm bg-neutral-100 rounded-2xl w-2/3" />
-          {showNotes && (
-            <Note>1–2 sentence portfolio statement. Keep concise.</Note>
-          )}
-        </div>
-      </Box>
-      {/* Optional Featured Row */}
-      <Box title="Featured Projects (Optional)">
-        <div className="grid md:grid-cols-2 gap-4">
-          {items.filter((i) => i.featured).map((it) => (
-            <div key={it.id} className="space-y-2" role="button" tabIndex={0}
-                 onClick={openDetail}
-                 onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openDetail()}>
-              <div className="ph-lg border border-dashed border-neutral-300 rounded-2xl flex items-center justify-center text-xs text-neutral-500">
-                Featured visual
-              </div>
-              <div className="ph-xs bg-neutral-100 rounded-2xl" />
-            </div>
-          ))}
-        </div>
-        {showNotes && <Note>Use a CMS flag to pin up to 2 projects.</Note>}
-      </Box>
-
-      {/* Controls (Type / Year / View / Sort) */}
-      <Box title="Filters & Controls">
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            {TYPES.map((t) => (
-              <button
-                key={t}
-                onClick={() => setActiveType(t)}
-                aria-pressed={activeType === t}
-                className={`px-2 py-1 rounded-2xl border text-xs ${
-                  activeType === t
-                    ? "bg-neutral-900 text-white border-neutral-900"
-                    : "border-neutral-300 hover:bg-neutral-50"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-            <div className="flex items-center gap-2">
-              <label htmlFor="year" className="text-xs">Year:</label>
-              <select
-                id="year"
-                value={activeYear}
-                onChange={(e) => setActiveYear(e.target.value)}
-                className="border border-neutral-300 rounded px-2 py-1 text-xs bg-white"
-              >
-                {YEARS.map((y) => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1" role="group" aria-label="View toggle">
-                <button
-                  aria-pressed={view === "grid"}
-                  onClick={() => setView("grid")}
-                  className={`px-2 py-1 rounded-l-2xl border text-xs ${
-                    view === "grid"
-                      ? "bg-neutral-900 text-white border-neutral-900"
-                      : "border-neutral-300 hover:bg-neutral-50"
-                  }`}
-                  title="Grid view"
-                >
-                  Grid
-                </button>
-                <button
-                  aria-pressed={view === "list"}
-                  onClick={() => setView("list")}
-                  className={`px-2 py-1 rounded-r-2xl border text-xs ${
-                    view === "list"
-                      ? "bg-neutral-900 text-white border-neutral-900"
-                      : "border-neutral-300 hover:bg-neutral-50"
-                  }`}
-                  title="List view"
-                >
-                  List
-                </button>
-              </div>
-
-              <label htmlFor="sort" className="text-xs ml-3">Sort:</label>
-              <select
-                id="sort"
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="border border-neutral-300 rounded px-2 py-1 text-xs bg-white"
-              >
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="az">A–Z</option>
-              </select>
-            </div>
-          </div>
-
+          <div className="ph-sm bg-neutral-100 rounded-sm" />
+          <div className="ph-sm bg-neutral-100 rounded-sm w-2/3" />
           {showNotes && (
             <Note>
-              (optional filtering)Keep filters simple (Type, Year).
+              One or two lines to position the practice: mediums, themes, and the kind of impact you pursue.
             </Note>
           )}
         </div>
       </Box>
 
-      {/* Results */}
-      <Box title="Projects">
-        {sorted.length === 0 ? (
-          <div className="text-xs text-neutral-500">No results. Try clearing filters.</div>
-        ) : view === "grid" ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sorted.map((it) => (
-              <article key={it.id} className="space-y-2 cursor-pointer" role="button" tabIndex={0}
-                       onClick={openDetail}
-                       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openDetail()}>
-                <div className="ph-lg border border-dashed border-neutral-300 rounded-2xl flex items-center justify-center text-xs text-neutral-500"
-                     aria-label={`${it.title} media`}>
-                  Thumb (image/video)
-                </div>
-                <div className="ph-xs bg-neutral-100 rounded-2xl" /> {/* title line */}
-                <div className="flex items-center gap-2 text-[10px] text-neutral-600">
-                  <Tag>{it.type}</Tag>
-                  <Tag>{it.year}</Tag>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {sorted.map((it) => (
-              <article key={it.id} className="flex gap-3 items-center cursor-pointer"
-                       role="button" tabIndex={0}
-                       onClick={openDetail}
-                       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openDetail()}>
-                <div className="w-32 ph-md border border-dashed border-neutral-300 rounded-2xl flex items-center justify-center text-[10px] text-neutral-500 shrink-0">
-                  Media
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="ph-xs bg-neutral-100 rounded-2xl w-2/3" />
-                  <div className="ph-xs bg-neutral-100 rounded-2xl w-1/2" />
-                  <div className="flex items-center gap-2 text-[10px] text-neutral-600">
-                    <Tag>{it.type}</Tag>
-                    <Tag>{it.year}</Tag>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+      {/* Featured — widescreen, no pagination UI (natural horizontal scroll) */}
+      <Box title="Featured">
+        <div
+          ref={stripRef}
+          className="
+            flex overflow-x-auto snap-x snap-mandatory gap-2
+            scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none]
+            pb-1
+          "
+        >
+          {/* Hide scrollbar (webkit) */}
+          <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+
+          {featured.map((it) => (
+            <FeaturedCard key={it.id} item={it} onOpen={openDetail} />
+          ))}
+        </div>
+
+        {showNotes && (
+          <Note>
+            Widescreen 16:9 cards (video-first). One large card per snap with a subtle peek of the next.
+          </Note>
         )}
       </Box>
 
-      {/* Closing CTA (optional, but recommended) */}
-      <Box title="Work with Natascha">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div className="space-y-1">
-            <SectionTitle>Interested in collaborating?</SectionTitle>
-            <Note>Bridge portfolio → services/contact. Friendly, accessible tone.</Note>
-          </div>
-          <div className="flex gap-2">
-            <button className="border border-neutral-400 rounded-2xl px-3 py-2 text-sm">Contact</button>
-            <button className="border border-neutral-400 rounded-2xl px-3 py-2 text-sm">Request Workshop</button>
-          </div>
+      {/* All Projects — compact list w/ preview anchored in this section */}
+      <Box title="All Projects">
+        <div className="relative">
+          <ProjectList items={rest} onOpen={openDetail} onHover={setHovered} />
+          <InContainerPreview item={hovered} />
         </div>
+
+        {showNotes && (
+          <Note>
+            Hover/focus shows a larger preview on desktop; stays within the section to feel grounded.
+          </Note>
+        )}
       </Box>
 
-      {/* Notes for CMS */}
-      {showNotes && (
-        <Box title="Notes — CMS Fields for Portfolio Cards">
+      {/* Closing invitation */}
+      <Box title="Invitation">
+        <CTAGroup
+          align="between"
+          primary="Contact"
+          secondary="See Services"
+          onPrimary={() => goTo && goTo("Contact")}
+          onSecondary={() => goTo && goTo("Services")}
+        >
+          <SectionTitle>Bring this work to your audience</SectionTitle>
           <Note>
-            Fields: Title, Featured media (image/video), Year (opt), Type tags, 80–120 char teaser, Link to detail.
-            Accessibility: descriptive alt text; captions for playable media.
+            Screenings, installations, facilitated sessions—let’s choose the right format together.
           </Note>
-        </Box>
-      )}
+        </CTAGroup>
+      </Box>
     </div>
   );
 }
