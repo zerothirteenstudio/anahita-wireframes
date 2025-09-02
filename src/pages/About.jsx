@@ -4,7 +4,7 @@ import { Box, Placeholder, SectionTitle, Note, CTAGroup } from "../components/ui
 export default function About({ showNotes, goTo }) {
   return (
     <div className="space-y-6">
-      {/* 1) Opening + At a Glance (merged) */}
+      {/* 1) Opening & At a Glance (merged) */}
       <Box title="Opening & At a Glance">
         <div className="grid md:grid-cols-[1.1fr,1.4fr] gap-6 items-start">
           {/* Left: portrait (tall) */}
@@ -12,7 +12,7 @@ export default function About({ showNotes, goTo }) {
             <Placeholder className="ph-2xl" label="Portrait / quiet looping video" />
           </div>
 
-          {/* Right: opener line + short bio + quick facts in a flowing stack */}
+          {/* Right: opener line + short bio + practice at a glance in a flowing stack */}
           <div className="space-y-5">
             {/* One-sentence opener */}
             <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
@@ -25,7 +25,7 @@ export default function About({ showNotes, goTo }) {
               <div className="ph-sm bg-neutral-100 rounded-sm w-5/6" />
             </div>
 
-            {/* Quick facts (inline, airy) */}
+            {/* Practice at a Glance (inline, airy) */}
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
                 <div className="text-xs text-neutral-500 mb-1">Artist</div>
@@ -41,19 +41,19 @@ export default function About({ showNotes, goTo }) {
               </div>
             </div>
 
-            {/* Optional: gentle CTAs, aligned to end for consistency */}
+            {/* Consistent CTAs, aligned to end for clarity */}
             <div className="flex gap-2 justify-end">
               <button
                 className="btn-ghost text-sm"
                 onClick={() => goTo && goTo("Portfolio")}
               >
-                See selected work
+                See Portfolio
               </button>
               <button
                 className="btn text-sm"
                 onClick={() => goTo && goTo("Contact")}
               >
-                Begin a conversation
+                Contact
               </button>
             </div>
           </div>
@@ -61,12 +61,12 @@ export default function About({ showNotes, goTo }) {
 
         {showNotes && (
           <Note>
-            One strong image + a single-line opener. Short bio and three quick facts support fast scanning.
+            One strong image + a single-line opener. Short bio and three practice highlights support fast scanning.
           </Note>
         )}
       </Box>
 
-      {/* 2) Main narrative (single column with optional inline image/caption) */}
+      {/* 2) Main Narrative (single column with optional inline image/caption) */}
       <Box title="Main Narrative">
         <div className="space-y-3">
           <div className="ph-xl bg-neutral-100 rounded-sm" />
@@ -128,7 +128,7 @@ export default function About({ showNotes, goTo }) {
         )}
       </Box>
 
-      {/* 5) Selected recognition (tight micro-lists) */}
+      {/* 5) Selected Recognition (tight micro-lists) */}
       <Box title="Selected Recognition">
         <div className="grid md:grid-cols-3 gap-4">
           {["Awards / Exhibitions", "Institutional Collaborations", "Press / Outcomes"].map((heading) => (
@@ -142,7 +142,7 @@ export default function About({ showNotes, goTo }) {
         </div>
         {showNotes && (
           <Note>
-            3–5 items per column. Add links/dates when available; keep the list spare.
+            3–5 items per column. Keep the list spare and focused.
           </Note>
         )}
       </Box>

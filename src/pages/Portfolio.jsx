@@ -9,8 +9,8 @@ import {
 } from "../components/ui";
 
 /* ---------------------------------------------
-   Featured card — widescreen (16:9), near full width
-   - One big card per snap, slight peek of next
+   Featured card — horizontal strip (editorial styling)
+   - 16:9 media plate, square corners, thin rule
 ---------------------------------------------- */
 function FeaturedCard({ item, onOpen }) {
   return (
@@ -23,25 +23,25 @@ function FeaturedCard({ item, onOpen }) {
       role="button"
       tabIndex={0}
       onClick={() => onOpen?.(item)}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(item)}
+      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen?.(item)}
       aria-label={`Open ${item.title}`}
     >
-      <div className="rounded-md border border-brand-border bg-white shadow-card overflow-hidden">
+      <div className="overflow-hidden border border-brand-border bg-white">
         {/* Media area: true 16:9 */}
         <div className="relative w-full aspect-[16/9]">
           <div className="absolute inset-0 p-3">
-            <Placeholder className="w-full h-full rounded-sm" label="Featured video / image" />
+            <Placeholder className="w-full h-full" label="Featured video / image" />
           </div>
         </div>
 
         {/* Meta / CMS-like fields */}
         <div className="px-4 pb-4 pt-3 space-y-2">
-          <div className="ph-xs bg-neutral-100 rounded-sm w-2/3" /> {/* title */}
+          <div className="ph-xs bg-neutral-100 w-3/4" aria-label="Project title" />
           <div className="flex items-center gap-2 text-[10px] text-neutral-600">
             <Tag>{item.year}</Tag>
             <Tag>{item.type}</Tag>
           </div>
-          <div className="ph-sm bg-neutral-100 rounded-sm w-10/12" /> {/* short impact line */}
+          <div className="ph-sm bg-neutral-100 w-10/12" aria-label="One-line teaser (context)" />
         </div>
       </div>
     </article>
@@ -59,7 +59,7 @@ function ProjectList({ items, onOpen, onHover }) {
           <button
             className="w-full text-left group grid grid-cols-[1fr,auto] gap-3 items-center"
             onClick={() => onOpen?.(it)}
-            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(it)}
+            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen?.(it)}
             onMouseEnter={() => onHover?.(it)}
             onMouseLeave={() => onHover?.(null)}
             onFocus={() => onHover?.(it)}
@@ -71,7 +71,7 @@ function ProjectList({ items, onOpen, onHover }) {
                 <Tag>{it.type}</Tag>
                 <Tag>{it.year}</Tag>
               </div>
-              <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" /> {/* title line */}
+              <div className="ph-xs bg-neutral-100 w-3/4" /> {/* title line */}
             </div>
             <span className="text-[11px] text-neutral-400 group-hover:text-neutral-700">
               View →
@@ -84,7 +84,7 @@ function ProjectList({ items, onOpen, onHover }) {
 }
 
 /* ---------------------------------------------
-   In-section preview (stays inside the Box)
+   In-section preview (editorial; stays inside the Box)
 ---------------------------------------------- */
 function InContainerPreview({ item }) {
   if (!item) return null;
@@ -93,14 +93,14 @@ function InContainerPreview({ item }) {
       className="
         hidden md:block absolute right-2 top-8
         w-[320px] lg:w-[380px] xl:w-[420px]
-        rounded-md border border-brand-border bg-white shadow-card
+        border border-brand-border bg-white
         pointer-events-none
       "
       aria-hidden="true"
     >
       <div className="p-3">
         <div className="text-[10px] text-neutral-500 mb-2">{item.title}</div>
-        <div className="rounded-md border border-brand-border overflow-hidden">
+        <div className="border border-brand-border overflow-hidden">
           {/* 16:9 here too for consistency */}
           <div className="relative w-full aspect-[16/9]">
             <div className="absolute inset-0">
@@ -145,29 +145,27 @@ export default function Portfolio({ showNotes, goTo }) {
       {/* Intro */}
       <Box title="Intro">
         <div className="space-y-2">
-          <div className="ph-sm bg-neutral-100 rounded-sm" />
-          <div className="ph-sm bg-neutral-100 rounded-sm w-2/3" />
+          <div className="ph-sm bg-neutral-100" />
+          <div className="ph-sm bg-neutral-100 w-2/3" />
           {showNotes && (
             <Note>
-              One or two lines to position the practice: mediums, themes, and the kind of impact you pursue.
+              One or two lines to position the practice (mediums, themes, contexts). Titles, types, years, teasers, and covers are sourced from the Projects CMS; full field guidance lives in the Project Detail strategy.
             </Note>
           )}
         </div>
       </Box>
 
-      {/* Featured — widescreen, no pagination UI (natural horizontal scroll) */}
+      {/* Featured — horizontal scroller */}
       <Box title="Featured">
         <div
           ref={stripRef}
           className="
             flex overflow-x-auto snap-x snap-mandatory gap-2
             scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none]
-            pb-1
+            pb-1 no-scrollbar
           "
         >
-          {/* Hide scrollbar (webkit) */}
-          <style>{`div::-webkit-scrollbar { display: none; }`}</style>
-
+          <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
           {featured.map((it) => (
             <FeaturedCard key={it.id} item={it} onOpen={openDetail} />
           ))}
@@ -175,12 +173,12 @@ export default function Portfolio({ showNotes, goTo }) {
 
         {showNotes && (
           <Note>
-            Widescreen 16:9 cards (video-first). One large card per snap with a subtle peek of the next.
+            Widescreen 16:9 cards (video-first), square corners, thin rules (no drop shadow). One large card per snap with a subtle peek of the next. Card fields are sourced from the Projects CMS.
           </Note>
         )}
       </Box>
 
-      {/* All Projects — compact list w/ preview anchored in this section */}
+      {/* All Projects — clean list with preview */}
       <Box title="All Projects">
         <div className="relative">
           <ProjectList items={rest} onOpen={openDetail} onHover={setHovered} />
@@ -189,7 +187,7 @@ export default function Portfolio({ showNotes, goTo }) {
 
         {showNotes && (
           <Note>
-            Hover/focus shows a larger preview on desktop; stays within the section to feel grounded.
+            Hover/focus shows a larger preview on desktop; stays within the section. List rows pull basic fields from the Projects CMS.
           </Note>
         )}
       </Box>
@@ -205,7 +203,7 @@ export default function Portfolio({ showNotes, goTo }) {
         >
           <SectionTitle>Bring this work to your audience</SectionTitle>
           <Note>
-            Screenings, installations, facilitated sessions—let’s choose the right format together.
+            Use this slot to invite screenings, exhibitions, or facilitated sessions.
           </Note>
         </CTAGroup>
       </Box>

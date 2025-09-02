@@ -30,7 +30,7 @@ function BrandBadge() {
       <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-neutral-400 text-[9px]">
         Z
       </span>
-      Created by Zerothirteen Studio
+      Created by  Zerothirteen Studio
     </a>
   );
 }

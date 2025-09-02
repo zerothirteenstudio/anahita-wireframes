@@ -87,7 +87,6 @@ html {
     border-radius: var(--radius-xs);
   }
 
-
   /* Section titles & notes */
   .section-title { @apply text-sm font-medium text-neutral-800 mb-2; }
   .note { @apply text-[11px] leading-snug text-neutral-500; }
@@ -100,4 +99,33 @@ html {
 
   /* Fluid padding for sections/cards */
   .pad { padding: clamp(0.75rem, 2vw, 1.5rem); }
+}
+
+/* ---------- Cargo-style helpers (documentary / ledger vibe) ---------- */
+@layer utilities {
+  /* thin rules and separators */
+  .rule-x { border-top: 1px solid theme('colors.brand.border'); }
+  .rule-y { border-left: 1px solid theme('colors.brand.border'); }
+
+  /* editorial monospace accents (for small meta) */
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  .caps { text-transform: uppercase; letter-spacing: 0.04em; }
+  .muted { color: theme('colors.neutral.500'); }
+
+  /* ledger grid (main + aside) */
+  .ledger {
+    display: grid;
+    grid-template-columns: 1fr; /* mobile */
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  @media (min-width: 900px) {
+    .ledger { grid-template-columns: 2fr 1fr; }
+  }
+
+  /* figure plate + caption */
+  .plate { aspect-ratio: 16 / 9; border: 1px solid theme('colors.brand.border'); border-radius: var(--radius-md); overflow: hidden; background: white; }
+  .legend { font-size: 0.75rem; line-height: 1.2; color: theme('colors.neutral.600'); }
+
+  /* stack of featured items with dividers */
+  .stack-divided > * + * { margin-top: clamp(0.75rem, 2vw, 1.25rem); padding-top: clamp(0.75rem, 2vw, 1.25rem); border-top: 1px solid theme('colors.brand.border'); }
 }
