@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, SectionTitle, Placeholder, CTAGroup, Note } from "../components/ui";
+import { Placeholder, CTAGroup, Note } from "../components/ui";
+import { SectionBand, EditorialHeading, Plate } from "../components/system";
 
 export default function Home({ showNotes, goTo }) {
   const openDetail = () => typeof goTo === "function" && goTo("Project Detail");
@@ -9,119 +10,115 @@ export default function Home({ showNotes, goTo }) {
   const toContact = () => typeof goTo === "function" && goTo("Contact");
 
   return (
-    <div id="main" className="space-y-6">
-      {/* —————————————————————————————————————————————
-          HERO — cinematic intro
-         ————————————————————————————————————————————— */}
-      <Box title="Hero">
-        <div className="relative overflow-hidden rounded-md border border-brand-border">
+    <div id="main" className="sections sections-roomy">
+      {/* HERO — cinematic intro */}
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Hero</EditorialHeading>}>
+        <Plate variant="border" aspect="21x9">
           <Placeholder
-            className="ph-2xl"
-            label="Hero image or subtle video loop (16:9) with alt/captions"
+            className="absolute inset-0 w-full h-full border-0"
+            label="Hero still / subtle loop (21:9) with alt/caption"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
-          <div className="absolute inset-0 p-4 md:p-6 flex items-end">
-            <div className="space-y-3 max-w-2xl text-white">
-              <div className="ph-md bg-neutral-100 rounded-sm w-2/3" aria-label="Name / role" />
-              <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" aria-label="One-line positioning statement" />
-              <CTAGroup
-                layout="row"
-                align="start"
-                secondary="View portfolio"
-                primary="Explore offerings"
-                onSecondary={toPortfolio}
-                onPrimary={toOfferings}
-              />
-            </div>
+          {/* Centered logline strip on plate */}
+          <div className="absolute inset-0 grid place-items-center px-6">
+            <h1 className="page-title mono text-black bg-white px-4 py-2 inline-block text-center">One‑line logline that frames the practice and its values.</h1>
           </div>
-        </div>
+          <div className="absolute right-3 top-3 md:right-4 md:top-4 flex items-center gap-3">
+            <button className="btn-link caption mono caps" onClick={toPortfolio}>View Portfolio</button>
+            <button className="btn-link caption mono caps" onClick={toOfferings}>Explore Services</button>
+          </div>
+        </Plate>
         {showNotes && (
           <Note>
-            Hero should hold name, one-line positioning, and main CTAs. Tone: cinematic, human, values-forward.
+            Orientation + trust in one scroll. Story‑first hero with a single logline centered on the image. Quiet links in the top‑right (Portfolio / Offerings). Name is optional here; it appears on About and site chrome.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* —————————————————————————————————————————————
           FEATURED + WORK SNAPSHOT
          ————————————————————————————————————————————— */}
-      <Box title="Featured & snapshot">
-        <div className="grid gap-4 lg:grid-cols-[2fr,1fr]">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Featured & snapshot</EditorialHeading>}>
+        <div className="grid gap-5 md:gap-6 lg:grid-cols-[2fr,1fr] items-start">
           {/* Featured project */}
-          <article
-            className="card !p-0 overflow-hidden cursor-pointer focus:outline-none"
-            role="button"
-            tabIndex={0}
-            onClick={openDetail}
-            aria-label="Open featured project"
-          >
-            <Placeholder className="ph-xl" label="Featured project visual" />
-            <div className="px-4 pb-4 space-y-2">
-              <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" aria-label="Project title" />
-              <div className="ph-xs bg-neutral-100 rounded-sm w-4/5" aria-label="One-line project teaser" />
+          <article className="overflow-hidden cursor-pointer focus:outline-none" role="button" tabIndex={0} onClick={openDetail} aria-label="Open featured project" aria-describedby="feat-title feat-teaser feat-meta">
+            <Plate variant="border" aspect="16x9">
+              <Placeholder className="absolute inset-0 w-full h-full border-0" label="Featured project visual" />
+            </Plate>
+            <div className="pt-3 space-y-1">
+              <div id="feat-title" className="ph-sm bg-neutral-100 w-3/4" aria-label="Featured project title (heading)" />
+              <div id="feat-teaser" className="ph-xs bg-neutral-100 w-4/5" aria-label="One-line project teaser (body)" />
+              <div id="feat-meta" className="legend mono caps text-neutral-600">FILM · 2024</div>
             </div>
           </article>
 
           {/* Work snapshot (2 teasers) */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-4 md:gap-5">
             {[1, 2].map((n) => (
               <button
                 key={n}
-                className="group relative overflow-hidden rounded-md border border-brand-border focus:outline-none"
+                className="group relative overflow-hidden focus:outline-none"
                 onClick={toPortfolio}
                 aria-label={`Open work ${n}`}
               >
-                <Placeholder className="ph-lg" label={`Work ${n} thumbnail`} />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <Plate variant="border" aspect="16x9">
+                  <Placeholder className="absolute inset-0 w-full h-full border-0" label={`Work ${n} thumbnail`} />
+                </Plate>
               </button>
             ))}
           </div>
         </div>
         {showNotes && (
           <Note>
-            Featured project = anchor. Two teasers show breadth. Portfolio page carries full depth.
+            One anchor project with a 1–2 line human context (not metrics). Two small thumbnails link to Portfolio to show range without turning Home into a gallery. Featured opens the project; thumbnails route to Portfolio.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* —————————————————————————————————————————————
           ABOUT TEASER
          ————————————————————————————————————————————— */}
-      <Box title="About teaser">
-        <div className="grid gap-4 md:grid-cols-[1fr,2fr] items-start">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">About teaser</EditorialHeading>}>
+        <div className="grid gap-5 md:gap-6 md:grid-cols-[1fr,2fr] items-start">
           <div className="max-md:mb-2">
-            <Placeholder className="ph-lg" label="Portrait / still" />
+            <Plate variant="border" aspect="3x2" aria-describedby="about-intro about-meta">
+              <Placeholder className="absolute inset-0 w-full h-full border-0" label="Portrait / still" />
+            </Plate>
           </div>
-          <div className="space-y-2">
-            <div className="ph-sm bg-neutral-100 rounded-sm w-11/12" aria-label="Short intro line (1–2 sentences)" />
-            <button className="underline text-[12px]" onClick={toAbout}>
-              Read full bio →
-            </button>
+          <div className="space-y-3">
+            <p id="about-intro" className="body" aria-label="Short intro line about the artist">
+              Short intro line about the artist, situating their work and approach.
+            </p>
+            <div id="about-meta" className="legend mono caps text-neutral-600">ARTIST & FACILITATOR — CITY</div>
+            <div>
+              <button className="btn-link caption mono caps" onClick={toAbout}>Read full bio →</button>
+            </div>
           </div>
         </div>
         {showNotes && (
           <Note>
-            Teaser gives a small human anchor (photo + 1–2 lines). Full story lives on About.
+            Connect the work to the human behind it. Portrait/still + 1–2 sentence micro‑intro (philosophy and motive). Link: Read full bio. This is not the full story—just the thread that invites the click.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* —————————————————————————————————————————————
           OFFERINGS — with methods/outcomes teaser
          ————————————————————————————————————————————— */}
-      <Box title="Offerings">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Offerings &amp; how I work</EditorialHeading>}>
         <div className="space-y-3">
-          <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" aria-label="Methods/outcomes teaser (1–2 lines)" />
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="ph-sm bg-neutral-100 w-3/4" aria-label="Methods/outcomes teaser (1–2 lines)" />
+          <div className="grid gap-4 md:gap-5 sm:grid-cols-3">
             {["Workshops", "Facilitation", "Consulting"].map((label) => (
               <button
                 key={label}
                 onClick={toOfferings}
-                className="card w-full text-left focus:outline-none"
+                className="w-full text-left focus:outline-none"
                 aria-label={`Open ${label}`}
               >
-                <Placeholder className="ph-md" label={`${label} visual`} />
-                <div className="mt-2 ph-xs bg-neutral-100 rounded-sm w-1/2" aria-label={`${label} label`} />
+                <Plate variant="border" aspect="4x3">
+                  <Placeholder className="absolute inset-0 w-full h-full border-0" label={`${label} visual`} />
+                </Plate>
+                <div className="mt-2 ph-xs bg-neutral-100 w-1/2" aria-label={`${label} label`} />
               </button>
             ))}
           </div>
@@ -129,63 +126,70 @@ export default function Home({ showNotes, goTo }) {
             <CTAGroup
               layout="row"
               align="end"
-              primary="Explore offerings"
+              primary="Explore services"
               onPrimary={toOfferings}
             />
           </div>
         </div>
         {showNotes && (
           <Note>
-            Intro line explains methods/outcomes (participants + hirers). Cards show service categories. Details live on Services page.
+            For hirers and participants: 1–2 lines on methods/outcomes (trauma‑informed, participatory, arts‑rooted). Cards are labels only: Workshops / Facilitation / Consulting. Save formats, case examples, and testimonials for the Services page.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* —————————————————————————————————————————————
           PARTICIPANT TRUST — quotes block
          ————————————————————————————————————————————— */}
-      <Box title="Participant trust">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Placeholder className="ph-md" label="Short participant quote" />
-            <div className="ph-xs bg-neutral-100 rounded-sm w-1/3" aria-label="Attribution" />
-          </div>
-          <div className="space-y-1">
-            <Placeholder className="ph-md" label="Short organization quote" />
-            <div className="ph-xs bg-neutral-100 rounded-sm w-1/3" aria-label="Attribution" />
-          </div>
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Lived voices</EditorialHeading>}>
+        <div className="grid sm:grid-cols-2 gap-5 md:gap-6">
+          {/* Participant voice */}
+          <figure className="space-y-2">
+            <blockquote className="lede mono" aria-label="Participant quote">
+              “Short participant line about safety, clarity, or usefulness.”
+            </blockquote>
+            <figcaption className="caption text-neutral-600">Participant — Workshop Cohort</figcaption>
+          </figure>
+
+          {/* Organization voice */}
+          <figure className="space-y-2">
+            <blockquote className="lede mono" aria-label="Organization quote">
+              “Short organization line naming the quality of facilitation or outcomes.”
+            </blockquote>
+            <figcaption className="caption text-neutral-600">Program Lead — Organization</figcaption>
+          </figure>
         </div>
         {showNotes && (
           <Note>
-            Two lived-voice quotes (participant + org). Shows both safety and outcomes without logo walls.
+            Two short quotes: one from a participant (safety/usefulness), one from an organization (credibility of practice). Text‑only; keep it brief.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* —————————————————————————————————————————————
           INVITATION — soft close
          ————————————————————————————————————————————— */}
-      <Box title="Invitation">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <SectionBand ruleTop title={<EditorialHeading as="h2" variant="section">Next steps</EditorialHeading>}>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-1">
-            <SectionTitle>Start a conversation</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" aria-label="Closing line (friendly, human)" />
+            <EditorialHeading as="h3" variant="heading">Continue exploring</EditorialHeading>
+            <div className="ph-sm bg-neutral-100 w-4/5" aria-label="Closing line (friendly, human)" />
           </div>
           <CTAGroup
             layout="row"
             align="end"
-            primary="Contact"
-            secondary="See portfolio"
-            onPrimary={toContact}
-            onSecondary={toPortfolio}
+            primary="View portfolio"
+            secondary="Explore offerings"
+            onPrimary={toPortfolio}
+            onSecondary={toOfferings}
           />
         </div>
         {showNotes && (
           <Note>
-            Warm, simple close with two next steps: Contact or Portfolio.
+            Soft close. One calm line, then two routes: Portfolio (artistic depth) and Offerings (methods + outcomes). Keep it on-brand and unsalesy.
           </Note>
         )}
-      </Box>
+      </SectionBand>
     </div>
   );
 }

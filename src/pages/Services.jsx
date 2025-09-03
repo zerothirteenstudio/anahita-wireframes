@@ -1,81 +1,36 @@
 import React from "react";
-import {
-  Box,
-  Placeholder,
-  SectionTitle,
-  Note,
-  Button,
-  Tag,
-  CTAGroup,
-} from "../components/ui";
+import { Placeholder, Note, Button, Tag, CTAGroup } from "../components/ui";
+import { SectionBand, EditorialHeading, Plate } from "../components/system";
 
-/* -------------------------------
-   HERO (cinematic band component)
--------------------------------- */
-function HeroCinematic({
-  align = "left", // "left" | "center"
-  withVideo = false,
-  onPrimary,
-  onSecondary,
-}) {
-  const alignWrap =
-    align === "center"
-      ? "items-center text-center"
-      : "items-end text-left";
-
+/* HERO: Cinematic band using system Plate */
+function HeroCinematic({ onPrimary, onSecondary }) {
   return (
-    <section className="relative overflow-hidden rounded-md">
-      {/* Media */}
-      <div className="aspect-[21/9] w-full">
-        {withVideo ? (
-          <video
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="" type="video/mp4" />
-          </video>
-        ) : (
-          <div className="h-full w-full">
-            <Placeholder
-              className="h-full w-full"
-              label="Cinematic still / short loop (16:9)"
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Gradient overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
-
-      {/* Copy */}
-      <div className={`absolute inset-0 flex ${alignWrap} p-4 md:p-8`}>
-        <div className="max-w-2xl space-y-3">
-          <h1 className="text-white text-xl md:text-3xl font-medium tracking-tight">
-            I hold space for transformation and creation
-          </h1>
-          <p className="hidden sm:block text-white/90 text-sm md:text-base leading-relaxed max-w-xl">
-            Work grounded in power-sharing, consent, and care—meeting teams,
-            communities, and institutions where they are.
-          </p>
-          <div
-            className={`${align === "center" ? "justify-center" : ""} pt-1`}
-          >
+    <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Hero</EditorialHeading>}>
+      <Plate variant="border" aspect="21x9">
+        <div className="absolute inset-0">
+          <Placeholder className="absolute inset-0 w-full h-full border-0" label="Cinematic still / short loop (21:9)" />
+        </div>
+        {/* Copy overlay (subtle; keep CTAs here for Services) */}
+        <div className="absolute inset-0 p-4 md:p-8 flex items-end">
+          <div className="max-w-2xl space-y-3 text-neutral-900">
+            <h1 className="heading">I hold space for transformation and creation</h1>
+            <p className="body measure">
+              Work grounded in power-sharing, consent, and care—meeting teams,
+              communities, and institutions where they are.
+            </p>
             <CTAGroup
               layout="row"
-              align={align === "center" ? "center" : "start"}
-              primary="Begin a conversation"
-              secondary="See selected work"
+              align="start"
+              primary="Start a conversation"
+              secondary="View selected work"
               onPrimary={onPrimary}
               onSecondary={onSecondary}
               gap="sm"
             />
           </div>
         </div>
-      </div>
-    </section>
+      </Plate>
+    </SectionBand>
   );
 }
 
@@ -94,10 +49,12 @@ function OfferingCard({ title = "Offering", onClick }) {
       }
       aria-label={onClick ? `Open ${title}` : undefined}
     >
-      <SectionTitle>{title}</SectionTitle>
-      <div className="ph-sm bg-neutral-100 rounded-sm" /> {/* 1–2 line intro */}
-      <div className="ph-md bg-neutral-100 rounded-sm" /> {/* short description */}
-      <Placeholder className="ph-sm" label="Optional image / icon" />
+      <EditorialHeading as="h3" variant="section">{title}</EditorialHeading>
+      <div className="ph-sm bg-neutral-100" /> {/* 1–2 line intro */}
+      <div className="ph-md bg-neutral-100" /> {/* short description */}
+      <Plate variant="grey" aspect="3x2">
+        <Placeholder className="absolute inset-0 w-full h-full border-0" label="Optional image / icon" />
+      </Plate>
     </article>
   );
 }
@@ -114,25 +71,24 @@ export default function Offerings({ showNotes, goTo }) {
   const toPortfolio = () => typeof goTo === "function" && goTo("Portfolio");
 
   return (
-    <div className="space-y-6">
+    <div className="sections sections-roomy">
+      {/* Page heading */}
+      <div className="mb-3">
+        <h1 className="page-title">Offerings</h1>
+        <p className="lede measure text-neutral-700">
+          Workshops, facilitation, and collaboration — grounded in consent and care.
+        </p>
+      </div>
       {/* HERO */}
-      <Box title="Hero">
-        <HeroCinematic
-          align="left"
-          withVideo={false}
-          onPrimary={toContact}
-          onSecondary={toPortfolio}
-        />
-        {showNotes && (
-          <Note>
-            Wide visual with overlayed text + one primary action. Keep copy
-            concise; the image sets the tone.
-          </Note>
-        )}
-      </Box>
+      <HeroCinematic onPrimary={toContact} onSecondary={toPortfolio} />
+      {showNotes && (
+        <Note>
+          Wide visual with overlayed text + one primary action. Keep copy concise; the image sets the tone.
+        </Note>
+      )}
 
       {/* OFFERINGS */}
-      <Box title="Offerings">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Offerings</EditorialHeading>}>
         <div className="grid md:grid-cols-3 gap-4">
           <OfferingCard title="Workshops" onClick={toContact} />
           <OfferingCard title="Facilitation" onClick={toContact} />
@@ -147,41 +103,41 @@ export default function Offerings({ showNotes, goTo }) {
             outcomes, and an optional visual.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
 {/* METHODS & APPROACH */}
-<Box title="Methods & Approach">
+<SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Methods & Approach</EditorialHeading>}>
   <div className="space-y-6">
     {/* Lead block */}
     <div className="space-y-2">
-      <SectionTitle>Power-sharing</SectionTitle>
-      <div className="ph-md bg-neutral-100 rounded-sm w-5/6" />
-      <div className="ph-sm bg-neutral-100 rounded-sm w-2/3" />
+      <EditorialHeading as="h3" variant="heading">Power-sharing</EditorialHeading>
+      <div className="ph-md bg-neutral-100 w-5/6" />
+      <div className="ph-sm bg-neutral-100 w-2/3" />
     </div>
 
     {/* Mid row: two side blocks */}
     <div className="grid md:grid-cols-2 gap-6">
       <div className="space-y-2">
-        <SectionTitle>Somatic attunement</SectionTitle>
-        <div className="ph-md bg-neutral-100 rounded-sm" />
-        <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
+        <EditorialHeading as="h3" variant="heading">Somatic attunement</EditorialHeading>
+        <div className="ph-md bg-neutral-100" />
+        <div className="ph-sm bg-neutral-100 w-4/5" />
       </div>
       <div className="space-y-2">
-        <SectionTitle>Narrative work</SectionTitle>
-        <div className="ph-md bg-neutral-100 rounded-sm" />
-        <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" />
+        <EditorialHeading as="h3" variant="heading">Narrative work</EditorialHeading>
+        <div className="ph-md bg-neutral-100" />
+        <div className="ph-sm bg-neutral-100 w-3/4" />
       </div>
     </div>
 
     {/* Closing block */}
     <div className="space-y-2 max-w-md">
-      <SectionTitle>Conflict transformation</SectionTitle>
-      <div className="ph-md bg-neutral-100 rounded-sm" />
-      <div className="ph-sm bg-neutral-100 rounded-sm w-2/3" />
+      <EditorialHeading as="h3" variant="heading">Conflict transformation</EditorialHeading>
+      <div className="ph-md bg-neutral-100" />
+      <div className="ph-sm bg-neutral-100 w-2/3" />
     </div>
 
     {/* Practices tags */}
-    <div className="pt-4 border-t border-dashed border-neutral-300">
+    <div className="pt-4 rule-x">
       <div className="text-xs text-neutral-500 mb-2">Practices I draw from</div>
       <div className="flex flex-wrap gap-2 text-[11px] text-neutral-700">
         {[
@@ -206,20 +162,20 @@ export default function Offerings({ showNotes, goTo }) {
       Feels more editorial, less like a grid. Tags underline breadth without heavy text.
     </Note>
   )}
-</Box>
+</SectionBand>
 
       {/* OUTCOMES */}
-      <Box title="Outcomes & voices">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Outcomes & voices</EditorialHeading>}>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <SectionTitle>What changes</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
+            <EditorialHeading as="h3" variant="heading">What changes</EditorialHeading>
+            <div className="ph-sm bg-neutral-100" />
+            <div className="ph-sm bg-neutral-100" />
           </div>
           <div className="space-y-2">
-            <SectionTitle>In participants’ words</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
+            <EditorialHeading as="h3" variant="heading">In participants’ words</EditorialHeading>
+            <div className="ph-sm bg-neutral-100" />
+            <div className="ph-sm bg-neutral-100" />
           </div>
         </div>
         {showNotes && (
@@ -227,22 +183,22 @@ export default function Offerings({ showNotes, goTo }) {
             Two or three meaningful shifts, plus one or two short quotations.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* PRACTICALITIES */}
-      <Box title="Practicalities">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Practicalities</EditorialHeading>}>
         <div className="grid md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <SectionTitle>Formats</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
+            <EditorialHeading as="h3" variant="heading">Formats</EditorialHeading>
+            <div className="ph-sm bg-neutral-100" />
           </div>
           <div className="space-y-2">
-            <SectionTitle>Languages</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
+            <EditorialHeading as="h3" variant="heading">Languages</EditorialHeading>
+            <div className="ph-sm bg-neutral-100" />
           </div>
           <div className="space-y-2">
-            <SectionTitle>Scheduling & access</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
+            <EditorialHeading as="h3" variant="heading">Scheduling & access</EditorialHeading>
+            <div className="ph-sm bg-neutral-100" />
           </div>
         </div>
         {showNotes && (
@@ -251,26 +207,25 @@ export default function Offerings({ showNotes, goTo }) {
             lead times, and access practices.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* CLOSING */}
-      <Box title="Invitation">
+      <SectionBand ruleTop title={<EditorialHeading as="h2" variant="section">Invitation</EditorialHeading>}>
         <div className="grid md:grid-cols-[1fr,1fr] gap-4 items-center">
-          <Placeholder
-            className="ph-md"
-            label="Quiet still / empty room / hands in circle (optional)"
-          />
+          <Plate variant="grey" aspect="3x2">
+            <Placeholder className="absolute inset-0 w-full h-full border-0" label="Quiet still / empty room / hands in circle (optional)" />
+          </Plate>
           <div className="flex flex-col items-end gap-3">
-            <div className="ph-sm bg-neutral-100 rounded-sm" />
-            <Button variant="primary" onClick={toContact}>
-              Begin a conversation
+            <div className="ph-sm bg-neutral-100" />
+            <Button variant="rule" onClick={toContact}>
+              Get in touch
             </Button>
           </div>
         </div>
         {showNotes && (
           <Note>A single, gentle call to reach out. Keep it focused.</Note>
         )}
-      </Box>
+      </SectionBand>
     </div>
   );
 }

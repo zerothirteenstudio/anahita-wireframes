@@ -13,15 +13,15 @@ export default function Nav({ currentPage, setPage }) {
   return (
     <>
       {/* Desktop Nav */}
-      <nav className="hidden md:flex gap-3 text-sm">
+      <nav className="hidden md:flex gap-5 text-[13px] uppercase tracking-wide">
         {pages.map((p) => (
           <button
             key={p}
             onClick={() => handleNavClick(p)}
-            className={`px-2 py-1 rounded ${
+            className={`px-0 py-0 underline-offset-4 ${
               currentPage === p
-                ? "bg-neutral-900 text-white"
-                : "hover:bg-neutral-100"
+                ? "underline decoration-neutral-800"
+                : "hover:underline decoration-neutral-400"
             }`}
           >
             {p}
@@ -39,15 +39,13 @@ export default function Nav({ currentPage, setPage }) {
           ☰
         </button>
         {open && (
-          <div className="absolute left-0 mt-2 w-40 rounded border bg-white shadow-lg z-50">
+          <div className="absolute left-0 mt-2 w-44 rounded border bg-white shadow-lg z-50">
             {pages.map((p) => (
               <button
                 key={p}
                 onClick={() => handleNavClick(p)}
-                className={`block w-full text-left px-3 py-2 text-sm ${
-                  currentPage === p
-                    ? "bg-neutral-900 text-white"
-                    : "hover:bg-neutral-100"
+                className={`block w-full text-left px-3 py-2 text-[13px] ${
+                  currentPage === p ? "font-medium" : "text-neutral-700"
                 }`}
               >
                 {p}

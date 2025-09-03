@@ -7,8 +7,8 @@ import React from "react";
 export default function Placeholder({ label = "Placeholder", className = "" }) {
   return (
     <div
-      className={`border border-dashed border-neutral-300 flex items-center justify-center text-xs text-neutral-500 ${className}`}
-      style={{ borderRadius: "var(--radius-md)", background: "white" }}
+      className={`border border-brand-border bg-neutral-50 flex items-center justify-center text-xs text-neutral-500 ${className}`}
+      style={{ borderRadius: 0, background: "#F3F4F6" }}
       aria-label={label}
     >
       {label}

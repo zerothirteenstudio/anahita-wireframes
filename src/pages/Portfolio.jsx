@@ -12,36 +12,67 @@ import {
    Featured card — horizontal strip (editorial styling)
    - 16:9 media plate, square corners, thin rule
 ---------------------------------------------- */
-function FeaturedCard({ item, onOpen }) {
+function EditorialRow({ item, index, onOpen }) {
+  return (
+    <article className="grid md:grid-cols-[1fr,2fr] gap-6 items-start py-6">
+      {/* Left: meta and blurb */}
+      <div className="space-y-2">
+        <button
+          className="heading underline underline-offset-2 decoration-neutral-400 hover:decoration-neutral-700"
+          onClick={() => onOpen?.(item)}
+        >
+          {item.title}
+        </button>
+        <div className="ph-sm bg-neutral-100 w-5/6" />
+        <div className="text-[11px] text-neutral-500 space-x-2">
+          <Tag>{item.type}</Tag>
+          <Tag>{item.year}</Tag>
+        </div>
+      </div>
+
+      {/* Right: large plate with tiny code in the corner */}
+      <div className="relative border border-brand-border bg-white">
+        <div className="absolute -top-5 right-0 text-[11px] text-neutral-600">
+          {String(index + 1).padStart(2, '0')}/{item.year}
+        </div>
+        <div className="aspect-[16/9]">
+          <Placeholder className="w-full h-full" label="Cover / still" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function EditorialSlide({ item, index, onOpen }) {
   return (
     <article
-      className="
-        snap-start shrink-0
-        w-[92%] sm:w-[90%] md:w-[88%] lg:w-[82%] xl:w-[76%]
-        mr-4 cursor-pointer
-      "
+      className="snap-start shrink-0 w-[180%] sm:w-[170%] md:w-[160%] lg:w-[140%] xl:w-[120%] mr-6"
       role="button"
       tabIndex={0}
       onClick={() => onOpen?.(item)}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen?.(item)}
       aria-label={`Open ${item.title}`}
     >
-      <div className="overflow-hidden border border-brand-border bg-white">
-        {/* Media area: true 16:9 */}
-        <div className="relative w-full aspect-[16/9]">
-          <div className="absolute inset-0 p-3">
-            <Placeholder className="w-full h-full" label="Featured video / image" />
-          </div>
-        </div>
-
-        {/* Meta / CMS-like fields */}
-        <div className="px-4 pb-4 pt-3 space-y-2">
-          <div className="ph-xs bg-neutral-100 w-3/4" aria-label="Project title" />
-          <div className="flex items-center gap-2 text-[10px] text-neutral-600">
-            <Tag>{item.year}</Tag>
+      <div className="grid md:grid-cols-[1fr,2fr] gap-6 items-start bg-white">
+        {/* Left: meta and blurb */}
+        <div className="space-y-2 p-3">
+          <div className="text-[11px] text-neutral-500 space-x-2">
             <Tag>{item.type}</Tag>
+            <Tag>{item.year}</Tag>
           </div>
-          <div className="ph-sm bg-neutral-100 w-10/12" aria-label="One-line teaser (context)" />
+          <button className="heading underline underline-offset-2 decoration-neutral-400 hover:decoration-neutral-700">
+            {item.title}
+          </button>
+          <div className="ph-sm bg-neutral-100 w-5/6" />
+        </div>
+        {/* Right: media plate with small code */}
+        <div className="relative">
+          <div className="absolute -top-5 right-0 text-[11px] text-neutral-600">
+            {String(index + 1).padStart(2, '0')}/{item.year}
+          </div>
+          <div className="border border-brand-border aspect-[16/9] max-h-[90vh] w-full">
+            <Placeholder className="w-full h-full" label="Cover / still" />
+          </div>
         </div>
       </div>
     </article>
@@ -141,12 +172,21 @@ export default function Portfolio({ showNotes, goTo }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="sections">
+      {/* Page heading */}
+      <div className="mb-3">
+        <h1 className="page-title">Portfolio</h1>
+        <p className="lede measure-wide text-neutral-700">
+          Selected work across film, performance, and facilitation.
+        </p>
+      </div>
       {/* Intro */}
       <Box title="Intro">
-        <div className="space-y-2">
-          <div className="ph-sm bg-neutral-100" />
-          <div className="ph-sm bg-neutral-100 w-2/3" />
+        <div className="space-y-2 measure">
+          <p>
+            A concise catalogue view. Titles link to detail pages; years and
+            types appear in small caps for quick scan.
+          </p>
           {showNotes && (
             <Note>
               One or two lines to position the practice (mediums, themes, contexts). Titles, types, years, teasers, and covers are sourced from the Projects CMS; full field guidance lives in the Project Detail strategy.
@@ -155,25 +195,21 @@ export default function Portfolio({ showNotes, goTo }) {
         </div>
       </Box>
 
-      {/* Featured — horizontal scroller */}
-      <Box title="Featured">
+      {/* Selected Work — editorial rows */}
+      <Box title="Selected Work">
         <div
           ref={stripRef}
-          className="
-            flex overflow-x-auto snap-x snap-mandatory gap-2
-            scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none]
-            pb-1 no-scrollbar
-          "
+          className="no-scrollbar flex overflow-x-auto snap-x snap-mandatory gap-2 scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] pb-1"
         >
-          <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
-          {featured.map((it) => (
-            <FeaturedCard key={it.id} item={it} onOpen={openDetail} />
+          <style>{`.no-scrollbar::-webkit-scrollbar{display:none}`}</style>
+          {featured.map((it, idx) => (
+            <EditorialSlide key={it.id} item={it} index={idx} onOpen={openDetail} />
           ))}
         </div>
 
         {showNotes && (
           <Note>
-            Widescreen 16:9 cards (video-first), square corners, thin rules (no drop shadow). One large card per snap with a subtle peek of the next. Card fields are sourced from the Projects CMS.
+            Highlights 2–3 key projects with title, type, year, a one‑line teaser, and film‑ratio media. Opens to the Project Detail for full context.
           </Note>
         )}
       </Box>
@@ -187,25 +223,28 @@ export default function Portfolio({ showNotes, goTo }) {
 
         {showNotes && (
           <Note>
-            Hover/focus shows a larger preview on desktop; stays within the section. List rows pull basic fields from the Projects CMS.
+            Compact list of all projects (title, type, year, optional teaser). Hover/focus preview is for orientation only. Fields are sourced from the Projects CMS.
           </Note>
         )}
       </Box>
 
       {/* Closing invitation */}
       <Box title="Invitation">
-        <CTAGroup
-          align="between"
-          primary="Contact"
-          secondary="See Services"
-          onPrimary={() => goTo && goTo("Contact")}
-          onSecondary={() => goTo && goTo("Services")}
-        >
-          <SectionTitle>Bring this work to your audience</SectionTitle>
-          <Note>
-            Use this slot to invite screenings, exhibitions, or facilitated sessions.
-          </Note>
-        </CTAGroup>
+        <div className="rule-x pt-6 pb-4">
+          <CTAGroup
+            align="between"
+            primary="Get in touch"
+            secondary="Explore services"
+            onPrimary={() => goTo && goTo("Contact")}
+            onSecondary={() => goTo && goTo("Services")}
+          >
+            <SectionTitle>Bring this work to your audience</SectionTitle>
+            <Note>
+              Use this slot to invite screenings, exhibitions, or facilitated sessions.
+            </Note>
+          </CTAGroup>
+        </div>
+        <div className="rule-x" />
       </Box>
     </div>
   );
