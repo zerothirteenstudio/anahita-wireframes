@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-neutral-50 p-4 md:p-8">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[1320px]">
 
         {/* Slim top toolbar: notes toggle + brand badge (removed the extra page nav) */}
         <div className="mb-4 flex items-center justify-between">
@@ -59,9 +59,9 @@ export default function App() {
 
         {/* Frame */}
         <div className="transition-all">
-          <div className="border-2 border-dashed border-neutral-300 rounded-2xl p-4 bg-white shadow-sm">
+          <div className="border border-neutral-200 rounded-lg p-4 bg-white shadow-sm">
             <Header currentPage={currentPage} setPage={setCurrentPage} />
-            <div className="h-[1px] bg-neutral-200 mb-4" />
+            <div className="h-[1px] bg-neutral-200 mb-4 hidden" />
 
             {currentPage === "Home" && (
               <Home showNotes={showNotes} goTo={setCurrentPage} />

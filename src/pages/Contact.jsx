@@ -1,32 +1,63 @@
-import React from "react";
-import { Button, Box, Tag, SectionTitle, Note, Placeholder } from "../components/ui";
+import React, { useCallback } from "react";
+import { Button, Note, Placeholder } from "../components/ui";
+import { SectionBand, EditorialHeading, Plate } from "../components/system";
 
 export default function Contact({ showNotes }) {
+  const email = "hello@example.com"; // replace with real address when ready
+  const copyEmail = useCallback(() => {
+    navigator.clipboard?.writeText(email).catch(() => {});
+  }, [email]);
+
   return (
-    <div className="space-y-6">
-      <Box title="Contact Form">
-        <div className="grid md:grid-cols-2 gap-4">
-          <input className="border border-dashed border-neutral-400 rounded-2xl px-3 py-2 text-sm" placeholder="Name" />
-          <input className="border border-dashed border-neutral-400 rounded-2xl px-3 py-2 text-sm" placeholder="Email" />
-          <input className="md:col-span-2 border border-dashed border-neutral-400 rounded-2xl px-3 py-2 text-sm" placeholder="Subject" />
-          <textarea className="md:col-span-2 border border-dashed border-neutral-400 rounded-2xl px-3 py-2 text-sm ph-lg" placeholder="Message" />
-          <div className="md:col-span-2 flex gap-2">
-            <button className="border border-neutral-400 rounded-2xl px-3 py-2 text-sm">Send</button>
-            <button className="border border-neutral-400 rounded-2xl px-3 py-2 text-sm">Book a Call</button>
+    <div className="sections sections-roomy">
+      {/* Page heading */}
+      <div className="mb-3">
+        <h1 className="page-title">Contact</h1>
+        <p className="lede measure text-neutral-700">Start a conversation. I read every message.</p>
+      </div>
+
+      {/* Email — primary route (no form) */}
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Email</EditorialHeading>}>
+        <div className="stack">
+          <div>
+            <a href={`mailto:${email}`} className="page-title mono">{email}</a>
+          </div>
+          <div className="caption muted">Please include your context, timeframe, and any access needs.</div>
+          <div className="flex gap-2">
+            <Button variant="rule" onClick={copyEmail}>Copy address</Button>
+            <Button className="btn-link caption" onClick={() => (window.location.href = `mailto:${email}`)}>Open mail app →</Button>
           </div>
         </div>
         {showNotes && (
-          <Note>Add spam protection & privacy notice. Different routes for inquiries are optional.</Note>
+          <Note>No form per client preference. Simple mailto keeps the flow human; ensure the address is protected (obfuscation/antispam) on launch.</Note>
         )}
-      </Box>
+      </SectionBand>
 
-      <Box title="Direct / Social">
-        <div className="grid md:grid-cols-3 gap-4">
-          <Placeholder label="Email / Studio address" />
-          <Placeholder label="Social links" />
-          <Placeholder label="Newsletter / RSS" />
+      {/* Direct / Social */}
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Direct / Social</EditorialHeading>}>
+        <div className="grid md:grid-cols-3 gap-5">
+          <div className="space-y-2">
+            <EditorialHeading as="h3" variant="heading">Studio</EditorialHeading>
+            <Plate variant="grey" aspect="3x2">
+              <Placeholder className="absolute inset-0 w-full h-full border-0" label="Address / City" />
+            </Plate>
+          </div>
+          <div className="space-y-2">
+            <EditorialHeading as="h3" variant="heading">Social</EditorialHeading>
+            <ul className="legend mono caps space-y-1">
+              <li><a className="btn-link" href="#">Instagram</a></li>
+              <li><a className="btn-link" href="#">Vimeo</a></li>
+              <li><a className="btn-link" href="#">Letterboxd</a></li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <EditorialHeading as="h3" variant="heading">Newsletter / RSS</EditorialHeading>
+            <Plate variant="grey" aspect="3x2">
+              <Placeholder className="absolute inset-0 w-full h-full border-0" label="Subscribe placeholder" />
+            </Plate>
+          </div>
         </div>
-      </Box>
+      </SectionBand>
     </div>
   );
 }

@@ -28,8 +28,8 @@ export default function CTAGroup({
   onPrimary,
   onSecondary,
   // variants
-  primaryVariant = "primary",
-  secondaryVariant = "default",
+  primaryVariant = "rule",
+  secondaryVariant = "link",
   // layout controls
   layout = "responsive",
   align = "start",

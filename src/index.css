@@ -4,8 +4,8 @@
 
 /* ---------- Fluid root type ---------- */
 html {
-  /* scales all rem-based Tailwind utilities app-wide */
-  font-size: clamp(15px, 14px + 0.5vw, 18px);
+  /* Slightly larger base + stronger fluid growth (no px) */
+  font-size: clamp(100%, 93.75% + 0.7vw, 125%);
 }
 
 /* ---------- Placeholder sizing (larger scale for cards/media) ---------- */
@@ -34,16 +34,40 @@ html {
     --radius-lg: 1rem;     /* 16px – bigger sections */
     --radius-xl: 1.5rem;   /* 24px – hero/banners */
 
-    /* Spacing tokens (optional helpers) */
-      --gap-xs: 0.5rem;
-      --gap-sm: 0.75rem;
-      --gap-md: 1rem;
-      --gap-lg: 1.5rem;
-      --gap-xl: 2rem;
-      --gap-2xl: 3rem;
+    /* Spacing tokens (modular scale ~ perfect fourth, r≈1.333) */
+      --gap-xs: 0.50rem;   /* for tight micro spacing */
+      --gap-sm: 0.75rem;   /* r^-1 */
+      --gap-md: 1.00rem;   /* base */
+      --gap-lg: 1.33rem;   /* r^1 */
+      --gap-xl: 1.78rem;   /* r^2 */
+      --gap-2xl: 2.37rem;  /* r^3 */
+
+    /* Section gap (page-level vertical rhythm) */
+    --section-gap: clamp(2rem, 5vw, 5rem);
+
+    /* Global rule + plate settings */
+    --rule-w: 0.0625rem;                 /* thin rule (1px at 16px base) */
+    --rule-color: var(--brand-border);   /* default rule color */
+    --band-pad-y: clamp(1.25rem, 3vw, 2.5rem);
+    --plate-grey: #F3F4F6;               /* neutral fill for grey plates */
 
     /* Focus ring (accent) */
     --ring: 0 0 0 3px rgba(249, 115, 22, .25); /* brand-accent @ 25% */
+    /* Brand palette (mirrors tailwind.config.js but safe in plain CSS) */
+    --brand: #111827;           /* main text */
+    --brand-muted: #6B7280;     /* secondary */
+    --brand-surface: #FFFFFF;
+    --brand-border: #D1D5DB;    /* hairlines */
+    --brand-accent: #7353BA;
+    --brand-accentII: #2F195F;
+    --brand-accentFg: #FFFFFF;
+
+    /* Neutral references used in this file (IDE-safe; no theme()) */
+    --neutral-900: #111827;
+    --neutral-700: #374151;
+    --neutral-600: #4B5563;
+    --neutral-500: #6B7280;
+    --neutral-200: #E5E7EB;
   }
 
   html, body {
@@ -51,66 +75,142 @@ html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+
+  /* Editorial link defaults */
+  a { text-decoration: underline; text-underline-offset: 2px; color: var(--neutral-900); }
+  a:hover { text-decoration-thickness: 2px; }
+
+  /* Accessible focus defaults */
+  :where(a, button, [role="button"], input, textarea, select):focus-visible {
+    outline: var(--rule-w) solid var(--neutral-700);
+    outline-offset: 0.125rem;
+  }
 }
 
 /* ---------- Components (global classes) ---------- */
 @layer components {
+  /* Type scale & helpers */
+  .page-title { @apply font-mono text-neutral-900; font-size: clamp(1.625rem, 2.2vw, 2.75rem); line-height: 1.2; letter-spacing: -0.01em; }
+  .lede { @apply font-mono text-neutral-800; font-size: clamp(1.125rem, 1.6vw, 1.375rem); line-height: 1.6; }
+  .kicker { @apply uppercase tracking-wide text-neutral-500; font-size: clamp(0.6875rem, 0.85vw, 0.75rem); }
+  .caption { @apply text-neutral-600; font-size: clamp(0.6875rem, 0.8vw, 0.75rem); max-width: 68ch; }
+
+  .heading { @apply font-mono text-neutral-900; font-size: clamp(1.25rem, 1.8vw, 1.75rem); line-height: 1.3; }
+  .body { font-size: clamp(0.9375rem, 1.2vw, 1.125rem); line-height: 1.6; }
+  .subheading { @apply font-mono; font-size: clamp(1.0625rem, 1.4vw, 1.25rem); line-height: 1.35; }
+  .eyebrow { @apply text-neutral-500; font-size: clamp(0.75rem, 0.9vw, 0.8125rem); letter-spacing: 0.02em; }
+
   /* Buttons */
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition;
-    @apply border border-brand-border;
-    border-radius: var(--radius-sm);
+    @apply inline-flex items-center justify-center px-3.5 py-2 text-base transition;
+    @apply border border-transparent;
+    border-radius: 0; /* flatter, editorial */
   }
   .btn:hover { @apply bg-neutral-50; }
   .btn:focus-visible { box-shadow: var(--ring); outline: none; }
 
-  .btn-primary {
-    @apply bg-brand-accent text-brand-accentFg border-transparent;
-  }
-  .btn-primary:hover { @apply bg-brand-accentII; }
+  .btn-primary { @apply bg-neutral-900 text-white border-neutral-900; }
+  .btn-primary:hover { @apply bg-neutral-800; }
 
-  .btn-ghost {
-    @apply border-transparent hover:bg-neutral-100;
+  .btn-ghost { @apply border-0 bg-transparent text-neutral-800 hover:underline underline-offset-2; }
+
+  /* Link-like button (editorial) */
+  .btn-link {
+    @apply underline underline-offset-2 decoration-neutral-400 hover:decoration-neutral-700 px-0 py-0 border-0 bg-transparent;
   }
+  .btn-quiet { @apply underline underline-offset-2 decoration-neutral-400 hover:decoration-neutral-700 px-0 py-0 border-0 bg-transparent; }
+
+  /* Editorial text CTA (link-like) */
+  .btn-editorial {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: var(--neutral-900);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: clamp(0.875rem, 1vw, 1rem);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Hairline rule button (editorial) */
+  .btn-rule {
+    @apply text-neutral-900 bg-transparent;
+    border: var(--rule-w) solid var(--rule-color);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    font-size: clamp(0.875rem, 1vw, 1rem);
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn-rule:hover { background: #f5f5f5; }
 
   /* Cards / Boxes */
   .card {
-    @apply border-2 border-dashed bg-white p-4 shadow-card;
-    @apply border-brand-border;
-    border-radius: var(--radius-md);
+    /* section blocks become lightweight, divided by hairlines */
+    @apply pt-4;
+    background: transparent;
+    border-top: var(--rule-w) solid var(--brand-border);
+    box-shadow: none;
+    border-radius: 0;
   }
+  .card:first-child { border-top: 0; padding-top: 0; }
 
   /* Tags / Chips */
   .chip {
-    @apply inline-flex items-center px-2 py-0.5 text-[11px] text-brand-muted;
-    @apply border border-brand-border;
-    border-radius: var(--radius-xs);
+    @apply inline-flex items-center px-1 py-0 uppercase tracking-wide text-neutral-500;
+    font-size: 0.6875rem; /* ~11px equivalent */
   }
 
   /* Section titles & notes */
-  .section-title { @apply text-sm font-medium text-neutral-800 mb-2; }
-  .note { @apply text-[11px] leading-snug text-neutral-500; }
+  .section-title { @apply font-mono uppercase tracking-wide text-neutral-700 mb-2; font-size: clamp(0.875rem, 1.4vw, 1rem); }
+  .note { @apply leading-snug text-neutral-500; font-size: clamp(0.75rem, 0.9vw, 0.8125rem); }
 }
 
 /* ---------- Utilities (tiny helpers) ---------- */
 @layer utilities {
   /* Fluid vertical stack spacing */
-  .stack { display: flex; flex-direction: column; gap: clamp(0.75rem, 2vw, 1.5rem); }
+  .stack { display: flex; flex-direction: column; gap: clamp(1rem, 3vw, 2.5rem); }
 
   /* Fluid padding for sections/cards */
-  .pad { padding: clamp(0.75rem, 2vw, 1.5rem); }
+  .pad { padding: clamp(1rem, 2.5vw, 2rem); }
+
+  /* Main sections wrapper (applies across pages) */
+  .sections { display:flex; flex-direction:column; gap: var(--section-gap); }
+  .sections-tight { --section-gap: clamp(1.25rem, 3.5vw, 3rem); }
+  .sections-roomy { --section-gap: clamp(2.5rem, 6vw, 6rem); }
+  .sections-max { --section-gap: clamp(4rem, 8vw, 8rem); }
+
+  /* Rule-separated band (top/bottom) */
+  .band { padding-block: var(--band-pad-y); }
+  .band-rule-top { border-top: var(--rule-w) solid var(--rule-color); }
+  .band-rule-bottom { border-bottom: var(--rule-w) solid var(--rule-color); }
+
+  /* Hide scrollbars (WebKit + Firefox) */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Readable measures */
+  .measure { max-width: 66ch; } /* screenplay-like measure */
+  .measure-narrow { max-width: 52ch; }
+  .measure-wide { max-width: 74ch; }
+
+  /* Screenwriting helpers (optional) */
+  .slug { @apply uppercase tracking-wide text-neutral-700; font-size: clamp(0.75rem, 0.9vw, 0.8125rem); }
+  .dialogue { max-width: 42ch; margin-left: 12ch; }
+  .parenthetical { max-width: 32ch; margin-left: 10ch; @apply italic text-neutral-600; }
 }
 
 /* ---------- Cargo-style helpers (documentary / ledger vibe) ---------- */
 @layer utilities {
   /* thin rules and separators */
-  .rule-x { border-top: 1px solid theme('colors.brand.border'); }
-  .rule-y { border-left: 1px solid theme('colors.brand.border'); }
+  .rule-x { border-top: var(--rule-w) solid var(--rule-color); }
+  .rule-y { border-left: var(--rule-w) solid var(--rule-color); }
 
   /* editorial monospace accents (for small meta) */
   .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
   .caps { text-transform: uppercase; letter-spacing: 0.04em; }
-  .muted { color: theme('colors.neutral.500'); }
+  .muted { color: var(--neutral-500); }
 
   /* ledger grid (main + aside) */
   .ledger {
@@ -123,9 +223,21 @@ html {
   }
 
   /* figure plate + caption */
-  .plate { aspect-ratio: 16 / 9; border: 1px solid theme('colors.brand.border'); border-radius: var(--radius-md); overflow: hidden; background: white; }
-  .legend { font-size: 0.75rem; line-height: 1.2; color: theme('colors.neutral.600'); }
+  .plate { border: var(--rule-w) solid var(--rule-color); background: white; }
+  .plate--grey { background: var(--plate-grey); }
+  .cargo-plate { position: relative; }
+  .cargo-plate::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(135deg,
+      transparent calc(50% - var(--rule-w)),
+      var(--rule-color) 50%,
+      transparent calc(50% + var(--rule-w))
+    );
+  }
+  .legend { font-size: clamp(0.75rem, 0.95vw, 0.8125rem); line-height: 1.3; color: var(--neutral-600); max-width: 68ch; }
 
   /* stack of featured items with dividers */
-  .stack-divided > * + * { margin-top: clamp(0.75rem, 2vw, 1.25rem); padding-top: clamp(0.75rem, 2vw, 1.25rem); border-top: 1px solid theme('colors.brand.border'); }
+  .stack-divided > * + * { margin-top: clamp(0.75rem, 2vw, 1.25rem); padding-top: clamp(0.75rem, 2vw, 1.25rem); border-top: var(--rule-w) solid var(--rule-color); }
 }

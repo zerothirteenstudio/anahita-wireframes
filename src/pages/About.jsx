@@ -1,94 +1,96 @@
 import React from "react";
-import { Box, Placeholder, SectionTitle, Note, CTAGroup } from "../components/ui";
+import { Placeholder, Note, CTAGroup } from "../components/ui";
+import { SectionBand, EditorialHeading, Plate } from "../components/system";
 
 export default function About({ showNotes, goTo }) {
   return (
-    <div className="space-y-6">
+    <div className="sections sections-roomy">
+      {/* Page heading */}
+      <div className="mb-3">
+        <h1 className="page-title">About</h1>
+        <p className="lede measure-wide text-neutral-700">
+          Practice at the intersection of film, facilitation, and narrative
+          repair.
+        </p>
+      </div>
       {/* 1) Opening & At a Glance (merged) */}
-      <Box title="Opening & At a Glance">
-        <div className="grid md:grid-cols-[1.1fr,1.4fr] gap-6 items-start">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Opening & At a Glance</EditorialHeading>}>
+        <div className="grid md:grid-cols-[1fr,1.6fr] gap-3 md:gap-4 items-start">
           {/* Left: portrait (tall) */}
           <div className="space-y-3">
-            <Placeholder className="ph-2xl" label="Portrait / quiet looping video" />
+            <div className="max-w-[14rem] md:max-w-[16rem] lg:max-w-[18rem]">
+              <Plate variant="border" aspect="2x3" aria-describedby="about-opener about-roles">
+                <Placeholder className="absolute inset-0 w-full h-full border-0" label="Portrait / quiet looping video" />
+              </Plate>
+              <div className="legend text-neutral-600 mt-2">Portrait caption (optional)</div>
+            </div>
           </div>
 
           {/* Right: opener line + short bio + practice at a glance in a flowing stack */}
           <div className="space-y-5">
             {/* One-sentence opener */}
-            <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
+            <div id="about-opener" className="ph-sm bg-neutral-100 w-4/5" aria-label="One-sentence opener" />
 
             {/* Short bio (3–4 compact lines) */}
             <div className="space-y-2">
-              <SectionTitle>Short Bio</SectionTitle>
-              <div className="ph-sm bg-neutral-100 rounded-sm" />
-              <div className="ph-sm bg-neutral-100 rounded-sm" />
-              <div className="ph-sm bg-neutral-100 rounded-sm w-5/6" />
+              <EditorialHeading as="h3" variant="heading">Short Bio</EditorialHeading>
+              <div className="ph-sm bg-neutral-100" />
+              <div className="ph-sm bg-neutral-100" />
+              <div className="ph-sm bg-neutral-100 w-5/6" />
             </div>
 
             {/* Practice at a Glance (inline, airy) */}
             <div className="grid sm:grid-cols-3 gap-4">
-              <div>
-                <div className="text-xs text-neutral-500 mb-1">Artist</div>
-                <div className="ph-xs bg-neutral-100 rounded-sm w-2/3" />
+              <div id="about-roles">
+                <div className="legend mono caps text-neutral-600 mb-1">Artist</div>
+                <div className="ph-xs bg-neutral-100 w-2/3" />
               </div>
               <div>
-                <div className="text-xs text-neutral-500 mb-1">Facilitator</div>
-                <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" />
+                <div className="legend mono caps text-neutral-600 mb-1">Facilitator</div>
+                <div className="ph-xs bg-neutral-100 w-3/4" />
               </div>
               <div>
-                <div className="text-xs text-neutral-500 mb-1">Consultant</div>
-                <div className="ph-xs bg-neutral-100 rounded-sm w-4/5" />
+                <div className="legend mono caps text-neutral-600 mb-1">Consultant</div>
+                <div className="ph-xs bg-neutral-100 w-4/5" />
               </div>
             </div>
+
 
             {/* Consistent CTAs, aligned to end for clarity */}
-            <div className="flex gap-2 justify-end">
-              <button
-                className="btn-ghost text-sm"
-                onClick={() => goTo && goTo("Portfolio")}
-              >
-                See Portfolio
-              </button>
-              <button
-                className="btn text-sm"
-                onClick={() => goTo && goTo("Contact")}
-              >
-                Contact
-              </button>
-            </div>
+            {/* CTA removed per request — calm scan below the portrait */}
           </div>
         </div>
 
         {showNotes && (
           <Note>
-            One strong image + a single-line opener. Short bio and three practice highlights support fast scanning.
+            Fast human orientation. Add a portrait/still, a one‑sentence opener, 3–4 bio lines, and a few quick facts (roles, location, languages).
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* 2) Main Narrative (single column with optional inline image/caption) */}
-      <Box title="Main Narrative">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Main Narrative</EditorialHeading>}>
         <div className="space-y-3">
-          <div className="ph-xl bg-neutral-100 rounded-sm" />
-          <div className="ph-lg bg-neutral-100 rounded-sm" />
+          <div className="ph-xl bg-neutral-100" />
+          <div className="ph-lg bg-neutral-100" />
           <div className="grid md:grid-cols-[2fr,1fr] gap-4 items-start mt-2">
-            <div className="ph-lg bg-neutral-100 rounded-sm" />
+            <div className="ph-lg bg-neutral-100" />
             <div className="space-y-1">
-              <div className="ph-xs bg-neutral-100 rounded-sm w-3/4" />
-              <div className="ph-xs bg-neutral-100 rounded-sm w-1/2" />
+              <div className="ph-xs bg-neutral-100 w-3/4" />
+              <div className="ph-xs bg-neutral-100 w-1/2" />
             </div>
           </div>
         </div>
         {showNotes && (
           <Note>
-            300–500 words that tie film, facilitation, and why. Use one inline visual to pace the reading.
+            300–500 words linking your story, values, and the intersection of film/facilitation/consulting. One inline image optional.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* 3) Methods & Lineages (moved up, scannable) */}
-      <Box title="Methods & Lineages">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Methods & Lineages</EditorialHeading>}>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
             "Process Work (relational transformation)",
             "Theatre of the Oppressed",
@@ -98,77 +100,74 @@ export default function About({ showNotes, goTo }) {
             "Dream work / psychological inquiry",
           ].map((label) => (
             <div key={label} className="space-y-2">
-              <SectionTitle>{label}</SectionTitle>
-              <div className="ph-sm bg-neutral-100 rounded-sm" />
+              <EditorialHeading as="h3" variant="heading">{label}</EditorialHeading>
+              <div className="ph-sm bg-neutral-100" />
             </div>
           ))}
         </div>
         {showNotes && (
           <Note>
-            Six short statements; one sentence each. Name the lineage and your angle.
+            List 3–6 frameworks/lineages. Each gets one sentence in your own words (how it shapes practice).
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* 4) Pull-quote (moved down for resonance after methods) */}
-      <Box title="Pull-quote">
-        <figure className="border border-brand-border rounded-sm p-4 bg-white">
-          <blockquote className="text-base leading-relaxed">
-            <div className="ph-sm bg-neutral-100 rounded-sm w-11/12" />
-            <div className="ph-sm bg-neutral-100 rounded-sm w-4/5 mt-2" />
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">External voice</EditorialHeading>}>
+        <figure className="space-y-2">
+          <blockquote className="lede mono" aria-label="Short pull-quote">
+            “Short line from collaborator, participant, or press.”
           </blockquote>
-          <figcaption className="text-[11px] text-neutral-500 mt-2">
-            <div className="ph-xs bg-neutral-100 rounded-sm w-1/3" />
-          </figcaption>
+          <figcaption className="caption text-neutral-600">Name — Affiliation</figcaption>
         </figure>
         {showNotes && (
           <Note>
-            One sentence from a collaborator, participant, or press to anchor trust.
+            One short quote (participant, collaborator, or press) with attribution. Keeps the page human without logos.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* 5) Selected Recognition (tight micro-lists) */}
-      <Box title="Selected Recognition">
+      <SectionBand ruleBottom title={<EditorialHeading as="h2" variant="section">Selected Recognition</EditorialHeading>}>
         <div className="grid md:grid-cols-3 gap-4">
           {["Awards / Exhibitions", "Institutional Collaborations", "Press / Outcomes"].map((heading) => (
             <div key={heading} className="space-y-2">
-              <SectionTitle>{heading}</SectionTitle>
-              <div className="ph-sm bg-neutral-100 rounded-sm" />
-              <div className="ph-sm bg-neutral-100 rounded-sm" />
-              <div className="ph-sm bg-neutral-100 rounded-sm w-4/5" />
+              <EditorialHeading as="h3" variant="heading">{heading}</EditorialHeading>
+              <div className="ph-sm bg-neutral-100" />
+              <div className="ph-sm bg-neutral-100" />
+              <div className="ph-sm bg-neutral-100 w-4/5" />
             </div>
           ))}
         </div>
         {showNotes && (
           <Note>
-            3–5 items per column. Keep the list spare and focused.
+            Curate 3–5 items in 2–3 categories (awards/exhibitions, collaborations, press/outcomes). This is not a full CV.
           </Note>
         )}
-      </Box>
+      </SectionBand>
 
       {/* 6) Invitation */}
-      <Box title="Invitation">
+      <SectionBand ruleTop title={<EditorialHeading as="h2" variant="section">Invitation</EditorialHeading>}>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="space-y-1">
-            <SectionTitle>Begin a conversation</SectionTitle>
-            <div className="ph-sm bg-neutral-100 rounded-sm w-3/4" />
+            <EditorialHeading as="h3" variant="heading">Begin a conversation</EditorialHeading>
+            <div className="ph-sm bg-neutral-100 w-3/4" />
           </div>
           <CTAGroup
             layout="row"
             align="end"
-            secondary="See Portfolio"
-            primary="Contact"
+            secondary="View portfolio"
+            primary="Get in touch"
             onSecondary={() => goTo && goTo("Portfolio")}
             onPrimary={() => goTo && goTo("Contact")}
           />
         </div>
         {showNotes && (
           <Note>
-            Two consistent CTAs. Keep language invitational, not sales-driven.
+            One calm line that invites contact or collaboration. Buttons link to Portfolio and Contact.
           </Note>
         )}
-      </Box>
+      </SectionBand>
     </div>
   );
 }
